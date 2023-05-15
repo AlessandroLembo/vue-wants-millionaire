@@ -24,7 +24,8 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100%;
-  background-color: lightgray;
+  background-color: whitesmoke;
+  padding: 10rem;
 }
 
 nav {
