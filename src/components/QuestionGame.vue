@@ -22,19 +22,25 @@ export default {
 </script>
 
 <template>
-    <div class="row justify-content-center">
-        <div class="col-12 content-quiz">
-            <h2 class="text-center my-5">{{ getItemRandom.question }}</h2>
-            <ul class="row">
-                <li v-for="answer in getAnswers" :key="answer.answer" class="col-12 col-sm-6 list-group-item text-center">
-                    <div class="d-flex justify-content-start align-items-center box-answer m-2 px-5">
-                        <input type="radio" class="me-4">
-                        <div class="d-flex align-items-center">
-                            <p class="m-0">{{ answer.answer }}</p>
-                        </div>
-                    </div>
-                </li>
-            </ul>
+    <div class="content-quiz">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div id="jumbo-millionaire"></div>
+                <div class="question-content">
+                    <h2 class="text-center my-5">{{ getItemRandom.question }}</h2>
+                    <ul class="row">
+                        <li v-for="answer in getAnswers" :key="answer.answer"
+                            class="col-12 col-sm-6 list-group-item text-center p-2">
+                            <div class="d-flex justify-content-start align-items-center box-answer px-5">
+                                <input type="radio" class="me-4" id="city" name="city">
+                                <div class="d-flex align-items-center">
+                                    <p class="m-0">{{ answer.answer }}</p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -42,14 +48,31 @@ export default {
 <style scoped lang="scss">
 .content-quiz {
     width: 1200px;
-    height: 700px;
+    min-height: 700px;
     border: 2px solid darkgrey;
-    margin: 10rem auto;
+}
+
+#jumbo-millionaire {
+    height: 600px;
+    background-image: url('https://fs-prod-cdn.nintendo-europe.com/media/images/10_share_images/games_15/nintendo_switch_4/H2x1_NSwitch_WhoWantsToBeAMillionaire_IT.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.question-content {
+    padding: 2rem;
 }
 
 .box-answer {
-    border: 1px solid goldenrod;
+    border: 2px solid goldenrod;
     height: 70px;
 
+}
+
+#city {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
 }
 </style>
