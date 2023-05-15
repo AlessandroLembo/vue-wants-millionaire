@@ -36,7 +36,7 @@ export default {
                                 <input type="radio" class="col-12 col-md-6 mx-md-4 mx-1" id="city" name="city">
                                 <div class="col-12 col-md-6">
                                     <div class="d-flex align-items-center justify-content-center justify-content-md-start">
-                                        <p class="m-0 fs-6 text-white">{{ answer.answer }}</p>
+                                        <p class="m-0 fs-6 text-white">{{ answer.answer.toUpperCase() }}</p>
                                     </div>
                                 </div>
                             </div>
