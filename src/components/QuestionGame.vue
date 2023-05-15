@@ -6,16 +6,24 @@ export default {
     data() {
         return {
             questions,
+            userAnswer: '',
         }
     },
     computed: {
+        // ottenere una domanda random dall'array questions
         getItemRandom() {
             const item = questions[Math.floor(Math.random() * questions.length)];
             return item;
         },
 
+        // prendere dall'oggetto randomizzato solo l'array answers
         getAnswers() {
             return this.getItemRandom.answers;
+        },
+
+        getUserAnswer() {
+            return this.userAnswer;
+
         }
     }
 };
@@ -27,18 +35,21 @@ export default {
             <div class="col-12">
                 <img src="../assets/img/millionaire.jpg" class="img-fluid" alt="millionaire">
                 <div class="question-content">
+                    <!-- stampo la domanda -->
                     <h2 class="text-center text-white my-5">{{ getItemRandom.question }}</h2>
                     <ul class="row justify-content-center align-items-center p-0">
-                        <li v-for="answer in getAnswers" :key="answer.answer"
+                        <!-- giro sull'array di risposte e le stampo in pagina come opzioni -->
+                        <li v-for="answer in  getAnswers " :key="answer.answer"
                             class="col-12 col-sm-5 list-group-item text-center p-2">
                             <div
                                 class="row justify-content-center justify-content-md-start align-items-center box-answer g-2 p-0 answer">
-                                <input type="radio" class="col-12 col-md-6 mx-md-4 mx-1" id="city" name="city">
-                                <div class="col-12 col-md-6">
+                                <input type="radio" class="col-12 col-md-6 mx-md-4 mx-1" id="city" name="city"
+                                    :value="`${answer.answer}`" v-model="userAnswer">
+                                <label for="city" class="col-12 col-md-6">
                                     <div class="d-flex align-items-center justify-content-center justify-content-md-start">
                                         <p class="m-0 fs-6 text-white">{{ answer.answer.toUpperCase() }}</p>
                                     </div>
-                                </div>
+                                </label>
                             </div>
                         </li>
                     </ul>
