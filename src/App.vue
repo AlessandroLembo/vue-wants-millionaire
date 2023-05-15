@@ -18,16 +18,5 @@ export default {
 
 <style lang="scss">
 @use "./assets/scss/style.scss";
-
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  padding: 10rem;
-}
-
-nav {
-  padding: 30px;
-}
 </style>
 
