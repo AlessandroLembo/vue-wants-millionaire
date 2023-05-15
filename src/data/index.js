@@ -20,5 +20,29 @@ const questions = [
             rightAnswer: false,
         },
       ]
-    }
+    },
+    {
+        id: 2,
+        question: 'Qual è la capitale della Francia?',
+        answers: [
+          {
+              answer: 'Lille',
+              rightAnswer: false,
+          },
+          {
+              answer: 'Parigi',
+              rightAnswer: true,
+          },
+          {
+              answer: 'Bordeaux',
+              rightAnswer: false,
+          },
+          {
+              answer: 'Marsiglia',
+              rightAnswer: false,
+          },
+        ]
+      }
 ]
+
+export { questions };
