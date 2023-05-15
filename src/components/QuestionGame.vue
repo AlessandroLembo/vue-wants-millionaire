@@ -54,7 +54,7 @@ export default {
 
 #jumbo-millionaire {
     height: 600px;
-    background-image: url('https://fs-prod-cdn.nintendo-europe.com/media/images/10_share_images/games_15/nintendo_switch_4/H2x1_NSwitch_WhoWantsToBeAMillionaire_IT.jpg');
+    background-image: url('../assets/img/millionaire.jpg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
