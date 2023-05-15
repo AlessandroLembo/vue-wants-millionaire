@@ -42,6 +42,72 @@ const questions = [
               rightAnswer: false,
           },
         ]
+      },
+      {
+        id: 3,
+        question: 'Qual è la capitale della Germania?',
+        answers: [
+          {
+              answer: 'Monaco',
+              rightAnswer: false,
+          },
+          {
+              answer: 'Berlino',
+              rightAnswer: true,
+          },
+          {
+              answer: 'Stoccarda',
+              rightAnswer: false,
+          },
+          {
+              answer: 'Amburgo',
+              rightAnswer: false,
+          },
+        ]
+      },
+      {
+        id: 4,
+        question: 'Qual è la capitale della Spagna?',
+        answers: [
+          {
+              answer: 'Barcellona',
+              rightAnswer: false,
+          },
+          {
+              answer: 'Madrid',
+              rightAnswer: true,
+          },
+          {
+              answer: 'Valencia',
+              rightAnswer: false,
+          },
+          {
+              answer: 'Malaga',
+              rightAnswer: false,
+          },
+        ]
+      },
+      {
+        id: 5,
+        question: 'Qual è la capitale dell\' Inghilterra?',
+        answers: [
+          {
+              answer: 'Leeds',
+              rightAnswer: false,
+          },
+          {
+              answer: 'Londra',
+              rightAnswer: true,
+          },
+          {
+              answer: 'Manchester',
+              rightAnswer: false,
+          },
+          {
+              answer: 'Liverpool',
+              rightAnswer: false,
+          },
+        ]
       }
 ]
 
