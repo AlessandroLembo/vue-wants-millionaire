@@ -3,7 +3,7 @@ import ContainerGame from "./components/ContainerGame.vue";
 export default {
   name: "AppVue",
   components: {
-    ContainerGame,
+    ContainerGame
   },
 };
 </script>
@@ -12,7 +12,6 @@ export default {
   <div id="app">
     <div class="container">
       <container-game></container-game>
-
     </div>
   </div>
 </template>
@@ -24,7 +23,7 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  height: 100vh;
+  height: 100%;
   background-color: lightgray;
 }
 
