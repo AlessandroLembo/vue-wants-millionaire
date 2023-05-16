@@ -4,20 +4,28 @@ const questions = [
       question: 'Qual è la capitale d\'Italia?',
       answers: [
         {
+            index: 0,
             answer: 'Torino',
             rightAnswer: false,
+            isclicked: false,
         },
         {
+            index: 1,
             answer: 'Roma',
             rightAnswer: true,
+            isclicked: false,
         },
         {
+            index: 2,
             answer: 'Milano',
             rightAnswer: false,
+            isclicked: false,
         },
         {
+            index: 3,
             answer: 'Napoli',
             rightAnswer: false,
+            isclicked: false,
         },
       ]
     },
@@ -26,20 +34,28 @@ const questions = [
         question: 'Qual è la capitale della Francia?',
         answers: [
           {
-              answer: 'Lille',
-              rightAnswer: false,
+            index: 0,
+            answer: 'Lille',
+            rightAnswer: false,
+            isclicked: false,
           },
           {
-              answer: 'Parigi',
-              rightAnswer: true,
+            index: 1,
+            answer: 'Parigi',
+            rightAnswer: true,
+            isclicked: false,
           },
           {
-              answer: 'Bordeaux',
-              rightAnswer: false,
+            index: 2,
+            answer: 'Bordeaux',
+            rightAnswer: false,
+            isclicked: false,
           },
           {
-              answer: 'Marsiglia',
-              rightAnswer: false,
+            index: 3,
+            answer: 'Marsiglia',
+            rightAnswer: false,
+            isclicked: false, 
           },
         ]
       },
@@ -48,20 +64,28 @@ const questions = [
         question: 'Qual è la capitale della Germania?',
         answers: [
           {
-              answer: 'Monaco',
-              rightAnswer: false,
+            index: 0,
+            answer: 'Monaco',
+            rightAnswer: false,
+            isclicked: false,
           },
           {
-              answer: 'Berlino',
-              rightAnswer: true,
+            index: 1,
+            answer: 'Berlino',
+            rightAnswer: true,
+            isclicked: false,
           },
           {
-              answer: 'Stoccarda',
-              rightAnswer: false,
+            index: 2,
+            answer: 'Stoccarda',
+            rightAnswer: false,
+            isclicked: false,
           },
           {
-              answer: 'Amburgo',
-              rightAnswer: false,
+            index: 3,
+            answer: 'Amburgo',
+            rightAnswer: false,
+            isclicked: false,
           },
         ]
       },
@@ -70,20 +94,28 @@ const questions = [
         question: 'Qual è la capitale della Spagna?',
         answers: [
           {
-              answer: 'Barcellona',
-              rightAnswer: false,
+            index: 0,
+            answer: 'Barcellona',
+            rightAnswer: false,
+            isclicked: false,
           },
           {
-              answer: 'Madrid',
-              rightAnswer: true,
+            index: 1,
+            answer: 'Madrid',
+            rightAnswer: true,
+            isclicked: false,
           },
           {
-              answer: 'Valencia',
-              rightAnswer: false,
+            index: 2,
+            answer: 'Valencia',
+            rightAnswer: false,
+            isclicked: false,
           },
           {
-              answer: 'Malaga',
-              rightAnswer: false,
+            index: 3,
+            answer: 'Malaga',
+            rightAnswer: false,
+            isclicked: false,
           },
         ]
       },
@@ -92,20 +124,28 @@ const questions = [
         question: 'Qual è la capitale dell\' Inghilterra?',
         answers: [
           {
-              answer: 'Leeds',
-              rightAnswer: false,
+            index: 0,
+            answer: 'Leeds',
+            rightAnswer: false,
+            isclicked: false,
           },
           {
-              answer: 'Londra',
-              rightAnswer: true,
+            index: 1,
+            answer: 'Londra',
+            rightAnswer: true,
+            isclicked: false,
           },
           {
-              answer: 'Manchester',
-              rightAnswer: false,
+            index: 2,
+            answer: 'Manchester',
+            rightAnswer: false,
+            isclicked: false,
           },
           {
-              answer: 'Liverpool',
-              rightAnswer: false,
+            index: 3,
+            answer: 'Liverpool',
+            rightAnswer: false,
+            isclicked: false,
           },
         ]
       }
