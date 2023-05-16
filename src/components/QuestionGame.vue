@@ -10,7 +10,7 @@ export default {
             currentIndex: 0,
             isExactly: false,
             isWrong: false,
-            isclicked: false,
+            isClicked: false,
             disabledRadio: false,
         }
     },
@@ -31,7 +31,7 @@ export default {
         getUserAnswer(i) {
             // inizializzo il flag che utlizzo nel template con valore false
             this.isExactly = false;
-            this.isclicked = true;
+            this.isClicked = true;
             this.disabledRadio = true;
 
             // controllo se la risposta sinsola corrisponde alla risposta dell'utente e se la risposta è giusta
@@ -55,7 +55,7 @@ export default {
 
         playAgain() {
             this.disabledRadio = false;
-            this.isclicked = false;
+            this.isClicked = false;
             this.userAnswer = '';
             this.isExactly = false;
             this.isWrong = false;
@@ -78,7 +78,9 @@ export default {
                         <!-- giro sull'array di risposte e le stampo in pagina come opzioni -->
                         <li v-for="(answer, i) in getAnswers" :key="answer.answer"
                             class="col-12 col-sm-5 list-group-item text-center p-2">
-                            <div :class="{ 'bg-success': answer.rightAnswer && isExactly, 'bg-danger': answer.isclicked && !answer.rightAnswer && isWrong }"
+
+                            <!-- controllo la risposta e assegno al blocco un colore diverso a seconda che sia giusta o meno -->
+                            <div :class="{ 'bg-success': answer.isclicked && isExactly || isClicked && answer.rightAnswer, 'bg-danger': answer.isclicked && !answer.rightAnswer && isWrong }"
                                 class="row justify-content-center justify-content-md-start align-items-center box-answer g-2 p-0 answer">
                                 <input type="radio" class="col-12 col-md-6 mx-md-4 mx-1 choose-user" :id="answer.answer"
                                     :value="answer.answer" v-model="userAnswer" name="city" @change="getUserAnswer(i)"
@@ -92,16 +94,16 @@ export default {
                         </li>
 
                         <!-- alerts che danno un feedback sull'esito della risposta -->
-                        <div v-if="!isExactly && isclicked"
+                        <div v-if="!isExactly && isClicked"
                             class="alert alert-danger d-flex justify-content-between align-items-center" role="alert">
                             Risposta errata! Ritenta con la prossima domanda
                             <button type="button" class="btn btn-outline-secondary" @click="playAgain()">Continua</button>
                         </div>
-                        <div v-else-if="isExactly && isclicked"
+                        <!-- <div v-else-if="isExactly && isClicked"
                             class="alert alert-success d-flex justify-content-between align-items-center" role="alert">
                             Risposta esatta! Vai alla prossima domanda
                             <button type="button" class="btn btn-outline-secondary" @click="playAgain()">Continua</button>
-                        </div>
+                        </div> -->
                     </ul>
                 </div>
             </div>
