@@ -87,7 +87,13 @@ export default {
                         </li>
                         <div v-if="!exactly && isclicked" class="alert alert-danger d-flex justify-content-between"
                             role="alert">
-                            Risposta errata! Ritenta, sarai più fortunato..
+                            Risposta errata! Ritenta con la prossima domanda
+                            <button type="button" class="btn btn-outline-secondary" @click="playAgain()">Gioca di
+                                nuovo</button>
+                        </div>
+                        <div v-else-if="exactly && isclicked" class="alert alert-success d-flex justify-content-between"
+                            role="alert">
+                            Risposta esatta! Vai alla prossima domanda
                             <button type="button" class="btn btn-outline-secondary" @click="playAgain()">Gioca di
                                 nuovo</button>
                         </div>
@@ -100,7 +106,7 @@ export default {
 
 <style scoped lang="scss">
 .content-quiz {
-    max-width: 1200px;
+    max-width: 1500px;
     min-height: 700px;
     border: 2px solid darkgrey;
 }
