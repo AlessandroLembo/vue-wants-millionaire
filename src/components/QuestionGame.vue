@@ -7,6 +7,10 @@ export default {
         return {
             questions,
             userAnswer: '',
+            currentIndex: 0,
+            exactly: false,
+            isclicked: false,
+            disabledRadio: false,
         }
     },
     computed: {
@@ -21,10 +25,37 @@ export default {
             return this.getItemRandom.answers;
         },
 
-        getUserAnswer() {
-            return this.userAnswer;
+    },
+    methods: {
+        getUserAnswer(i) {
+            // inizializzo il flag che utlizzo nel template con valore false
+            this.exactly = false;
+            this.isclicked = true;
+            this.disabledRadio = true;
 
+            // controllo se la risposta sinsola corrisponde alla risposta dell'utente e se la risposta è giusta
+            if (this.getAnswers[i].answer === this.userAnswer && this.getAnswers[i].rightAnswer === true) {
+                this.exactly = true;
+            }
+
+            // giro sull'array di risposte e dichiaro non cliccate
+            this.getAnswers.map(ans => {
+                return ans.isclicked = false;
+            })
+
+            // cambio la proprietà 'isClicked solo alla risposta selezionata'
+            this.getAnswers[i].isclicked = true;
+            console.log(this.exactly);
+        },
+
+        playAgain() {
+            this.disabledRadio = false;
+            this.isclicked = false;
+            this.userAnswer = '';
+            this.exactly = false;
+            this.getItemRandom.answers;
         }
+
     }
 };
 </script>
@@ -39,19 +70,27 @@ export default {
                     <h2 class="text-center text-white my-5">{{ getItemRandom.question }}</h2>
                     <ul class="row justify-content-center align-items-center p-0">
                         <!-- giro sull'array di risposte e le stampo in pagina come opzioni -->
-                        <li v-for="answer in  getAnswers " :key="answer.answer"
+                        <li v-for="(answer, i) in getAnswers" :key="answer.answer"
                             class="col-12 col-sm-5 list-group-item text-center p-2">
-                            <div
+                            <div :class="answer.rightAnswer && exactly ? 'bg-success' : ''"
                                 class="row justify-content-center justify-content-md-start align-items-center box-answer g-2 p-0 answer">
-                                <input type="radio" class="col-12 col-md-6 mx-md-4 mx-1" id="city" name="city"
-                                    :value="`${answer.answer}`" v-model="userAnswer">
-                                <label for="city" class="col-12 col-md-6">
+                                <input type="radio" class="col-12 col-md-6 mx-md-4 mx-1 choose-user" :id="answer.answer"
+                                    :value="answer.answer" v-model="userAnswer" name="city" @change="getUserAnswer(i)"
+                                    :disabled="disabledRadio">
+                                <label :for="answer.answer" class="col-12 col-md-6">
                                     <div class="d-flex align-items-center justify-content-center justify-content-md-start">
-                                        <p class="m-0 fs-6 text-white">{{ answer.answer.toUpperCase() }}</p>
+                                        <p class="m-0 fs-6 city-option">{{ answer.answer.toUpperCase() }}</p>
                                     </div>
                                 </label>
                             </div>
+
                         </li>
+                        <div v-if="!exactly && isclicked" class="alert alert-danger d-flex justify-content-between"
+                            role="alert">
+                            Risposta errata! Ritenta, sarai più fortunato..
+                            <button type="button" class="btn btn-outline-secondary" @click="playAgain()">Gioca di
+                                nuovo</button>
+                        </div>
                     </ul>
                 </div>
             </div>
@@ -78,7 +117,7 @@ export default {
 
 }
 
-#city {
+.choose-user {
     width: 25px;
     height: 25px;
     border-radius: 50%;
@@ -86,5 +125,10 @@ export default {
 
 .answer:hover {
     background-color: dodgerblue;
+}
+
+.city-option {
+    color: white;
+
 }
 </style>
