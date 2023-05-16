@@ -99,11 +99,9 @@ export default {
                             Risposta errata! Ritenta con la prossima domanda
                             <button type="button" class="btn btn-outline-secondary" @click="playAgain()">Continua</button>
                         </div>
-                        <!-- <div v-else-if="isExactly && isClicked"
-                            class="alert alert-success d-flex justify-content-between align-items-center" role="alert">
-                            Risposta esatta! Vai alla prossima domanda
-                            <button type="button" class="btn btn-outline-secondary" @click="playAgain()">Continua</button>
-                        </div> -->
+                        <div v-else-if="!isClicked || isExactly" class="d-flex justify-content-end align-items-center">
+                            <button type="button" class="btn btn-warning mt-2" @click="playAgain()">Continua</button>
+                        </div>
                     </ul>
                 </div>
             </div>
