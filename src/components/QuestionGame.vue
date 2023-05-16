@@ -12,12 +12,19 @@ export default {
             isWrong: false,
             isClicked: false,
             disabledRadio: false,
+            disabledButton: false,
+            questionsDone: [],
         }
     },
     computed: {
         // ottenere una domanda random dall'array questions
-        getItemRandom() {
+        getItemRandom(i) {
+            /* TODO: ciclo per la funzione random per farla ripetere ogni volta che si clicca continua fino a quando sono uscite tutte le domande */
             const item = questions[Math.floor(Math.random() * questions.length)];
+            this.questionsDone.push(item);
+            questions.splice(i, 1);
+            // console.log(questions);
+            // console.log(this.questionsDone);
             return item;
         },
 
@@ -34,13 +41,16 @@ export default {
             this.isClicked = true;
             this.disabledRadio = true;
 
+            // Gestico l'attivazione del button continua 
+            if (this.userAnswer) {
+                this.disabledButton = true;
+            }
             // controllo se la risposta sinsola corrisponde alla risposta dell'utente e se la risposta è giusta
             if (this.getAnswers[i].answer === this.userAnswer && this.getAnswers[i].rightAnswer) {
                 this.isExactly = true;
             } else if (this.getAnswers[i].answer === this.userAnswer && !this.getAnswers[i].rightAnswer) {
                 this.isExactly = false;
                 this.isWrong = true;
-                console.log(this.isExactly);
             }
 
 
@@ -55,11 +65,13 @@ export default {
 
         playAgain() {
             this.disabledRadio = false;
+            this.disabledButton = false;
             this.isClicked = false;
             this.userAnswer = '';
             this.isExactly = false;
             this.isWrong = false;
-            this.getItemRandom.answers;
+            const element = questions[Math.floor(Math.random() * questions.length)];
+            console.log(element);
         }
 
     }
@@ -100,7 +112,8 @@ export default {
                             <button type="button" class="btn btn-outline-secondary" @click="playAgain()">Continua</button>
                         </div>
                         <div v-else-if="!isClicked || isExactly" class="d-flex justify-content-end align-items-center">
-                            <button type="button" class="btn btn-warning mt-2" @click="playAgain()">Continua</button>
+                            <button type="button" class="btn btn-warning mt-2" :disabled="!disabledButton"
+                                @click="playAgain()">Continua</button>
                         </div>
                     </ul>
                 </div>
