@@ -14,25 +14,30 @@ export default {
             disabledRadio: false,
             disabledButton: false,
             questionsDone: [],
+            start: false,
         }
     },
     computed: {
         // ottenere una domanda random dall'array questions
         getItemRandom() {
-            /* TODO: ciclo per la funzione random per farla ripetere ogni volta che si clicca continua fino a quando sono uscite tutte le domande */
+
             const item = questions[Math.floor(Math.random() * questions.length)];
-            this.questionsDone.push(item);
-            questions.splice(item.id - 1, 1);
-            // console.log(questions);
-            // console.log(this.questionsDone);
-            return item;
+
+            // controllo se ho appena iniziato o se sto conunando il gioco
+            if (!this.start) {
+                return item;
+            } else {
+                this.questionsDone.push(item);
+                questions.splice(item.id - 1, 1);
+                this.start = false;
+                return item;
+            }
         },
 
         // prendere dall'oggetto randomizzato solo l'array answers
         getAnswers() {
             return this.getItemRandom.answers;
         },
-
 
     },
     methods: {
@@ -69,10 +74,10 @@ export default {
         },
 
         playAgain() {
+            this.start = true;
             this.getAnswers.map(ans => {
                 return ans.isclicked = false;
             })
-
             this.disabledRadio = false;
             this.disabledButton = false;
             this.isClicked = false;
@@ -80,9 +85,6 @@ export default {
             this.isExactly = false;
             this.isWrong = false;
 
-            this.getAnswers;
-            // const element = questions[Math.floor(Math.random() * questions.length)];
-            // console.log(element);
         }
 
     }
@@ -116,6 +118,7 @@ export default {
                                 </label>
                             </div>
                         </li>
+
 
                         <!-- alerts che danno un feedback sull'esito della risposta -->
                         <div v-if="!isExactly && isClicked"
