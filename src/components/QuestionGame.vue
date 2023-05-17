@@ -33,6 +33,7 @@ export default {
             return this.getItemRandom.answers;
         },
 
+
     },
     methods: {
         getUserAnswer(i) {
@@ -42,28 +43,42 @@ export default {
             this.disabledRadio = true;
 
             // Gestico l'attivazione del button continua 
-            if (this.userAnswer) {
-                this.disabledButton = true;
-            }
-            // controllo se la risposta sinsola corrisponde alla risposta dell'utente e se la risposta è giusta
+            if (this.userAnswer) this.disabledButton = true;
+
+            // controllo se la risposta singola corrisponde alla risposta dell'utente e se la risposta è giusta
             if (this.getAnswers[i].answer === this.userAnswer && this.getAnswers[i].rightAnswer) {
                 this.isExactly = true;
+
+                // risposta sbagliata da parte dell'utente
             } else if (this.getAnswers[i].answer === this.userAnswer && !this.getAnswers[i].rightAnswer) {
                 this.isExactly = false;
                 this.isWrong = true;
             }
 
+            this.cleanRadios(i);
+            // // giro sull'array di risposte e le dichiaro non cliccate
+            // this.getAnswers.map(ans => {
+            //     return ans.isclicked = false;
+            // })
 
-            // giro sull'array di risposte e dichiaro non cliccate
+            // // cambio la proprietà 'isClicked' solo alla risposta selezionata
+            // this.getAnswers[i].isclicked = true;
+        },
+
+        cleanRadios(i) {
+            // giro sull'array di risposte e le dichiaro non cliccate
             this.getAnswers.map(ans => {
                 return ans.isclicked = false;
             })
 
-            // cambio la proprietà 'isClicked solo alla risposta selezionata'
-            this.getAnswers[i].isclicked = true;
+            // cambio la proprietà 'isClicked' solo alla risposta selezionata
+            return this.getAnswers[i].isclicked = true;
         },
 
         playAgain() {
+            this.getAnswers.map(ans => {
+                return ans.isclicked = false;
+            })
             this.disabledRadio = false;
             this.disabledButton = false;
             this.isClicked = false;
@@ -87,7 +102,8 @@ export default {
                     <!-- stampo la domanda -->
                     <h2 class="text-center text-white my-5">{{ getItemRandom.question }}</h2>
                     <ul class="row justify-content-center align-items-center p-0">
-                        <!-- giro sull'array di risposte e le stampo in pagina come opzioni -->
+
+                        <!-- giro sull'array delle opzioni di risposta alla domanda e le stampo in pagina -->
                         <li v-for="(answer, i) in getAnswers" :key="answer.answer"
                             class="col-12 col-sm-5 list-group-item text-center p-2">
 
