@@ -18,11 +18,11 @@ export default {
     },
     computed: {
         // ottenere una domanda random dall'array questions
-        getItemRandom(i) {
+        getItemRandom() {
             /* TODO: ciclo per la funzione random per farla ripetere ogni volta che si clicca continua fino a quando sono uscite tutte le domande */
             const item = questions[Math.floor(Math.random() * questions.length)];
             this.questionsDone.push(item);
-            questions.splice(i, 1);
+            questions.splice(item.id - 1, 1);
             // console.log(questions);
             // console.log(this.questionsDone);
             return item;
@@ -56,13 +56,6 @@ export default {
             }
 
             this.cleanRadios(i);
-            // // giro sull'array di risposte e le dichiaro non cliccate
-            // this.getAnswers.map(ans => {
-            //     return ans.isclicked = false;
-            // })
-
-            // // cambio la proprietà 'isClicked' solo alla risposta selezionata
-            // this.getAnswers[i].isclicked = true;
         },
 
         cleanRadios(i) {
@@ -79,14 +72,17 @@ export default {
             this.getAnswers.map(ans => {
                 return ans.isclicked = false;
             })
+
             this.disabledRadio = false;
             this.disabledButton = false;
             this.isClicked = false;
             this.userAnswer = '';
             this.isExactly = false;
             this.isWrong = false;
-            const element = questions[Math.floor(Math.random() * questions.length)];
-            console.log(element);
+
+            this.getAnswers;
+            // const element = questions[Math.floor(Math.random() * questions.length)];
+            // console.log(element);
         }
 
     }
