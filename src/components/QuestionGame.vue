@@ -15,31 +15,39 @@ export default {
             disabledButton: false,
             questionsDone: [],
             start: false,
+            gameOver: false,
+            lastQuestion: false,
         }
     },
     computed: {
         // ottenere una domanda random dall'array questions
         getItemRandom() {
-
             const item = questions[Math.floor(Math.random() * questions.length)];
+            const index = questions.indexOf(item);
 
-            // controllo se ho appena iniziato o se sto conunando il gioco
             if (!this.start) {
-                return item;
-            } else {
                 this.questionsDone.push(item);
-                questions.splice(item.id - 1, 1);
+                questions.splice(index, 1);
+            } else if (questions.length >= 1) {
                 this.start = false;
-                return item;
+                this.questionsDone.push(item);
+                questions.splice(index, 1);
+            } else {
+                this.lastQuestion = true;
             }
+
+            if (this.lastQuestion) this.gameOver = true;
+            return item;
+
         },
 
         // prendere dall'oggetto randomizzato solo l'array answers
         getAnswers() {
-            return this.getItemRandom.answers;
+            return this.getItemRandom?.answers;
         },
 
     },
+
     methods: {
         getUserAnswer(i) {
             // inizializzo il flag che utlizzo nel template con valore false
@@ -75,7 +83,7 @@ export default {
 
         playAgain() {
             this.start = true;
-            this.getAnswers.map(ans => {
+            this.getAnswers?.map(ans => {
                 return ans.isclicked = false;
             })
             this.disabledRadio = false;
@@ -97,40 +105,48 @@ export default {
             <div class="col-12">
                 <img src="../assets/img/millionaire.jpg" class="img-fluid" alt="millionaire">
                 <div class="question-content">
-                    <!-- stampo la domanda -->
-                    <h2 class="text-center text-white my-5">{{ getItemRandom.question }}</h2>
-                    <ul class="row justify-content-center align-items-center p-0">
+                    <div v-if="gameOver" class="text-white fs-2 text-center">Parita finita,
+                        vai al
+                        punteggio
+                    </div>
+                    <div v-else>
+                        <h2 class="text-center text-white my-5">{{ getItemRandom.question }}</h2>
+                        <ul class="row justify-content-center align-items-center p-0">
 
-                        <!-- giro sull'array delle opzioni di risposta alla domanda e le stampo in pagina -->
-                        <li v-for="(answer, i) in getAnswers" :key="answer.answer"
-                            class="col-12 col-sm-5 list-group-item text-center p-2">
+                            <!-- giro sull'array delle opzioni di risposta alla domanda e le stampo in pagina -->
+                            <li v-for="(answer, i) in getAnswers" :key="answer.answer"
+                                class="col-12 col-sm-5 list-group-item text-center p-2">
 
-                            <!-- controllo la risposta e assegno al blocco un colore diverso a seconda che sia giusta o meno -->
-                            <div :class="{ 'bg-success': answer.isclicked && isExactly || isClicked && answer.rightAnswer, 'bg-danger': answer.isclicked && !answer.rightAnswer && isWrong }"
-                                class="row justify-content-center justify-content-md-start align-items-center box-answer g-2 p-0 answer">
-                                <input type="radio" class="col-12 col-md-6 mx-md-4 mx-1 choose-user" :id="answer.answer"
-                                    :value="answer.answer" v-model="userAnswer" name="city" @change="getUserAnswer(i)"
-                                    :disabled="disabledRadio">
-                                <label :for="answer.answer" class="col-12 col-md-6">
-                                    <div class="d-flex align-items-center justify-content-center justify-content-md-start">
-                                        <p class="m-0 fs-6 city-option">{{ answer.answer.toUpperCase() }}</p>
-                                    </div>
-                                </label>
+                                <!-- controllo la risposta e assegno al blocco un colore diverso a seconda che sia giusta o meno -->
+                                <div :class="{ 'bg-success': answer.isclicked && isExactly || isClicked && answer.rightAnswer, 'bg-danger': answer.isclicked && !answer.rightAnswer && isWrong }"
+                                    class="row justify-content-center justify-content-md-start align-items-center box-answer g-2 p-0 answer">
+                                    <input type="radio" class="col-12 col-md-6 mx-md-4 mx-1 choose-user" :id="answer.answer"
+                                        :value="answer.answer" v-model="userAnswer" name="city" @change="getUserAnswer(i)"
+                                        :disabled="disabledRadio">
+                                    <label :for="answer.answer" class="col-12 col-md-6">
+                                        <div
+                                            class="d-flex align-items-center justify-content-center justify-content-md-start">
+                                            <p class="m-0 fs-6 city-option">{{ answer.answer.toUpperCase() }}</p>
+                                        </div>
+                                    </label>
+                                </div>
+                            </li>
+
+
+                            <!-- alerts che danno un feedback sull'esito della risposta -->
+                            <div v-if="!isExactly && isClicked"
+                                class="alert alert-danger d-flex justify-content-between align-items-center" role="alert">
+                                Risposta errata! Ritenta con la prossima domanda
+                                <button type="button" class="btn btn-outline-secondary"
+                                    @click="playAgain()">Continua</button>
                             </div>
-                        </li>
-
-
-                        <!-- alerts che danno un feedback sull'esito della risposta -->
-                        <div v-if="!isExactly && isClicked"
-                            class="alert alert-danger d-flex justify-content-between align-items-center" role="alert">
-                            Risposta errata! Ritenta con la prossima domanda
-                            <button type="button" class="btn btn-outline-secondary" @click="playAgain()">Continua</button>
-                        </div>
-                        <div v-else-if="!isClicked || isExactly" class="d-flex justify-content-end align-items-center">
-                            <button type="button" class="btn btn-warning mt-2" :disabled="!disabledButton"
-                                @click="playAgain()">Continua</button>
-                        </div>
-                    </ul>
+                            <div v-else-if="!isClicked || isExactly" class="d-flex justify-content-end align-items-center">
+                                <button type="button" class="btn btn-warning mt-2" :disabled="!disabledButton"
+                                    @click="playAgain()">Continua</button>
+                            </div>
+                        </ul>
+                    </div>
+                    <!-- stampo la domanda -->
                 </div>
             </div>
         </div>
@@ -140,7 +156,7 @@ export default {
 <style scoped lang="scss">
 .content-quiz {
     max-width: 1500px;
-    min-height: 700px;
+    min-height: 600px;
     border: 2px solid darkgrey;
 }
 
