@@ -122,7 +122,20 @@ export default {
                             punteggio
                         </button>
                         <div v-else>
-                            <div></div>
+                            <div class="d-flex justify-content-between">
+                                <div class="me-3">
+                                    <h3 class="text-white">Hai risposto esattamente a {{ userWin.length }} domande</h3>
+                                    <ul v-for="choose in userWin" :key="choose">
+                                        <li class="list-group-item text-success">{{ choose }}</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 class="text-white">Purtroppo hai sbagliato {{ userLose.length }} risposte</h3>
+                                    <ul v-for="choose in userLose" :key="choose">
+                                        <li class="list-group-item text-danger">{{ choose }}</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div v-else>
