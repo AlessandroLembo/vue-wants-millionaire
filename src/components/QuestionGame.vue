@@ -18,8 +18,8 @@ export default {
             gameOver: false,
             lastQuestion: false,
             result: false,
-            userAnswer: [],
-            errorAnswer: [],
+            userWin: [],
+            userLose: [],
         }
     },
     computed: {
@@ -62,13 +62,18 @@ export default {
             if (this.userAnswer) this.disabledButton = true;
 
             // controllo se la risposta singola corrisponde alla risposta dell'utente e se la risposta è giusta
+            let choose;
             if (this.getAnswers[i].answer === this.userAnswer && this.getAnswers[i].rightAnswer) {
                 this.isExactly = true;
+                choose = this.userAnswer;
+                this.userWin.push(choose);
 
                 // risposta sbagliata da parte dell'utente
             } else if (this.getAnswers[i].answer === this.userAnswer && !this.getAnswers[i].rightAnswer) {
                 this.isExactly = false;
                 this.isWrong = true;
+                choose = this.userAnswer;
+                this.userLose.push(choose);
             }
 
             this.cleanRadios(i);
