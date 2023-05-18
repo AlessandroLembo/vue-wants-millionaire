@@ -1,6 +1,6 @@
 const questions = [
     {
-      id: 1,
+      id: 0,
       question: 'Qual è la capitale d\'Italia?',
       answers: [
         {
@@ -30,7 +30,7 @@ const questions = [
       ]
     },
     {
-        id: 2,
+        id: 1,
         question: 'Qual è la capitale della Francia?',
         answers: [
           {
@@ -60,7 +60,7 @@ const questions = [
         ]
       },
       {
-        id: 3,
+        id: 2,
         question: 'Qual è la capitale della Germania?',
         answers: [
           {
@@ -90,7 +90,7 @@ const questions = [
         ]
       },
       {
-        id: 4,
+        id: 3,
         question: 'Qual è la capitale della Spagna?',
         answers: [
           {
@@ -120,7 +120,7 @@ const questions = [
         ]
       },
       {
-        id: 5,
+        id: 4,
         question: 'Qual è la capitale dell\' Inghilterra?',
         answers: [
           {
