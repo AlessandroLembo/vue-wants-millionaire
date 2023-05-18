@@ -17,6 +17,9 @@ export default {
             start: false,
             gameOver: false,
             lastQuestion: false,
+            result: false,
+            userAnswer: [],
+            errorAnswer: [],
         }
     },
     computed: {
@@ -93,6 +96,10 @@ export default {
             this.isExactly = false;
             this.isWrong = false;
 
+        },
+
+        showResult() {
+            this.result = true;
         }
 
     }
@@ -105,9 +112,13 @@ export default {
             <div class="col-12">
                 <img src="../assets/img/millionaire.jpg" class="img-fluid" alt="millionaire">
                 <div class="question-content">
-                    <div v-if="gameOver" class="text-white fs-2 text-center">Parita finita,
-                        vai al
-                        punteggio
+                    <div v-if="gameOver" class="d-flex justify-content-center">
+                        <button v-if="!result" type="button" class="btn btn-secondary mt-2" @click="showResult()">Vai al
+                            punteggio
+                        </button>
+                        <div v-else>
+                            <div></div>
+                        </div>
                     </div>
                     <div v-else>
                         <h2 class="text-center text-white my-5">{{ getItemRandom.question }}</h2>
