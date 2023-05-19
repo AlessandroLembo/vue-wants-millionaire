@@ -145,26 +145,30 @@ export default {
 
                         <!-- resoconto della partita -->
                         <div v-else>
-                            <div>
+                            <div class="result">
                                 <div class="me-3">
-                                    <h3 class="text-white">Hai risposto esattamente a {{ userWin.length }} domande</h3>
+                                    <h3>Hai risposto esattamente a {{ userWin.length }}
+                                        <span v-if="userWin.length === 1">domanda</span>
+                                        <span v-else>domande</span>
+                                    </h3>
                                     <ul v-for="choose in userWin" :key="choose.userAnswer">
-                                        <li class="list-group-item text-white">Alla domanda {{ `"${choose.question}"`
+                                        <li class="list-group-item">Alla domanda {{ `"${choose.question}"`
                                         }} hai
-                                            risposto correttamente con <span class="text-success">{{ choose.userAnswer
+                                            risposto con <span class="text-success">{{ choose.userAnswer
                                             }}</span>
                                         </li>
                                     </ul>
                                 </div>
                                 <div>
-                                    <h3 class="text-white">Purtroppo hai sbagliato {{ userLose.length }}
-                                        risposte</h3>
+                                    <h3 v-if="userLose.length === 1">Ottima prova, hai sbagliato solo {{ userLose.length }}
+                                        risposta</h3>
+                                    <h3 v-else>Purtroppo hai sbagliato {{ userLose.length }} risposte</h3>
 
                                     <ul v-for="choose in userLose" :key="choose.userAnswer">
-                                        <li class="list-group-item text-white">Alla domanda {{ `"${choose.question}"` }} hai
+                                        <li class="list-group-item">Alla domanda {{ `"${choose.question}"` }} hai
                                             risposto
                                             <span class="text-danger">{{ choose.userAnswer }}. </span>
-                                            <span class="text-white">La risposta corretta era <span class="text-success">{{
+                                            <span>La risposta corretta era <span class="text-success">{{
                                                 choose.rightAnswer }}</span></span>
                                         </li>
                                     </ul>
@@ -228,6 +232,13 @@ export default {
 .question-content {
     padding: 2rem;
     background-color: darkblue;
+}
+
+.result {
+    background-color: aliceblue;
+    min-height: 100px;
+    border: 10px solid darkgoldenrod;
+    padding: 1rem;
 }
 
 .box-answer {
