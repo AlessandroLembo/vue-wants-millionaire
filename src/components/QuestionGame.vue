@@ -7,7 +7,6 @@ export default {
         return {
             questions,
             userAnswer: '',
-            currentIndex: 0,
             isExactly: false,
             isWrong: false,
             isClicked: false,
@@ -20,6 +19,7 @@ export default {
             result: false,
             userWin: [],
             userLose: [],
+            pcQuestion: []
         }
     },
     computed: {
@@ -28,18 +28,18 @@ export default {
             const item = questions[Math.floor(Math.random() * questions.length)];
             const index = questions.indexOf(item);
 
-            if (!this.start) {
+            if (!this.start) { // Appena iniziato il gioco gestisco i movimenti negli array delle domande fatte e non fatte
                 this.questionsDone.push(item);
                 questions.splice(index, 1);
             } else if (questions.length >= 1) {
-                this.start = false;
+                this.start = false; // con il booleano gestiso il cambio domanda passando alla successiva
                 this.questionsDone.push(item);
                 questions.splice(index, 1);
             } else {
                 this.lastQuestion = true;
             }
 
-            if (this.lastQuestion) this.gameOver = true;
+            if (this.lastQuestion) this.gameOver = true; // ..dopo aver risposto all'ultima domanda
             return item;
 
         },
@@ -62,18 +62,25 @@ export default {
             if (this.userAnswer) this.disabledButton = true;
 
             // controllo se la risposta singola corrisponde alla risposta dell'utente e se la risposta è giusta
-            let choose;
+            let choose = {};
             if (this.getAnswers[i].answer === this.userAnswer && this.getAnswers[i].rightAnswer) {
                 this.isExactly = true;
-                choose = this.userAnswer;
+                choose = {
+                    question: this.getItemRandom.question,
+                    answer: this.userAnswer
+                }
                 this.userWin.push(choose);
 
                 // risposta sbagliata da parte dell'utente
             } else if (this.getAnswers[i].answer === this.userAnswer && !this.getAnswers[i].rightAnswer) {
                 this.isExactly = false;
                 this.isWrong = true;
-                choose = this.userAnswer;
+                choose = {
+                    question: this.getItemRandom.question,
+                    answer: this.userAnswer
+                };
                 this.userLose.push(choose);
+                console.log(this.userLose);
             }
 
             this.cleanRadios(i);
@@ -90,7 +97,7 @@ export default {
         },
 
         playAgain() {
-            this.start = true;
+            this.start = true; // booleano che mi permette di entrare nell'else della computed e far cambiare domanda
             this.getAnswers?.map(ans => {
                 return ans.isclicked = false;
             })
@@ -103,6 +110,7 @@ export default {
 
         },
 
+        // metodo per mostrare il risultato
         showResult() {
             this.result = true;
         }
@@ -122,17 +130,24 @@ export default {
                             punteggio
                         </button>
                         <div v-else>
-                            <div class="d-flex justify-content-between">
+                            <div>
                                 <div class="me-3">
                                     <h3 class="text-white">Hai risposto esattamente a {{ userWin.length }} domande</h3>
-                                    <ul v-for="choose in userWin" :key="choose">
-                                        <li class="list-group-item text-success">{{ choose }}</li>
+                                    <ul v-for="choose in userWin" :key="choose.answer">
+                                        <li class="list-group-item text-white">Alla domanda {{ `"${choose.question}"`
+                                        }} hai
+                                            risposto correttamente con <span class="text-success">{{ choose.answer }}</span>
+                                        </li>
+                                        <!-- <li class="list-group-item text-success">{{ choose }}</li> -->
                                     </ul>
                                 </div>
                                 <div>
                                     <h3 class="text-white">Purtroppo hai sbagliato {{ userLose.length }} risposte</h3>
-                                    <ul v-for="choose in userLose" :key="choose">
-                                        <li class="list-group-item text-danger">{{ choose }}</li>
+                                    <ul v-for="choose in userLose" :key="choose.answer">
+                                        <li class="list-group-item text-white">Alla domanda {{ `"${choose.question}"`
+                                        }} hai
+                                            risposto <span class="text-danger">{{ choose.answer }}</span></li>
+                                        <!-- <li class="list-group-item text-danger">{{ choose.answer }}</li> -->
                                     </ul>
                                 </div>
                             </div>
