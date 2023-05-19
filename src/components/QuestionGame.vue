@@ -19,7 +19,6 @@ export default {
             result: false,
             userWin: [],
             userLose: [],
-            pcQuestion: []
         }
     },
     computed: {
@@ -46,8 +45,18 @@ export default {
 
         // prendere dall'oggetto randomizzato solo l'array answers
         getAnswers() {
-            return this.getItemRandom?.answers;
+            return this.getItemRandom?.answers; // col punto interrogativo evito di andare in errore nel caso non ci sia l'elemento randomico
         },
+
+        // prendo dall'array di risposte solo quella giusta
+        filterAnswer() {
+            const rightAns = [];
+            this.getAnswers.filter(ans => {
+                if (ans.rightAnswer) rightAns.push(ans.answer);
+            })
+            const [rigAns] = rightAns; // prendo dall'array la stringa e la salvo in una variabile
+            return rigAns;
+        }
 
     },
 
@@ -63,11 +72,12 @@ export default {
 
             // controllo se la risposta singola corrisponde alla risposta dell'utente e se la risposta è giusta
             let choose = {};
+
             if (this.getAnswers[i].answer === this.userAnswer && this.getAnswers[i].rightAnswer) {
                 this.isExactly = true;
                 choose = {
                     question: this.getItemRandom.question,
-                    answer: this.userAnswer
+                    userAnswer: this.userAnswer,
                 }
                 this.userWin.push(choose);
 
@@ -77,10 +87,10 @@ export default {
                 this.isWrong = true;
                 choose = {
                     question: this.getItemRandom.question,
-                    answer: this.userAnswer
+                    userAnswer: this.userAnswer,
+                    rightAnswer: this.filterAnswer // valore restituito dalla computed è la risposta giusta a ogni domanda
                 };
                 this.userLose.push(choose);
-                console.log(this.userLose);
             }
 
             this.cleanRadios(i);
@@ -98,7 +108,7 @@ export default {
 
         playAgain() {
             this.start = true; // booleano che mi permette di entrare nell'else della computed e far cambiare domanda
-            this.getAnswers?.map(ans => {
+            this.getAnswers?.map(ans => { // col punto interrogativo evito di andare in errore nel caso non ci sia l'elemento randomico
                 return ans.isclicked = false;
             })
             this.disabledRadio = false;
@@ -125,34 +135,46 @@ export default {
             <div class="col-12">
                 <img src="../assets/img/millionaire.jpg" class="img-fluid" alt="millionaire">
                 <div class="question-content">
+                    <!-- Se il gioco è finito mostro i risultati -->
                     <div v-if="gameOver" class="d-flex justify-content-center">
+
+                        <!-- button pe mostrare il punteggio -->
                         <button v-if="!result" type="button" class="btn btn-secondary mt-2" @click="showResult()">Vai al
                             punteggio
                         </button>
+
+                        <!-- resoconto della partita -->
                         <div v-else>
                             <div>
                                 <div class="me-3">
                                     <h3 class="text-white">Hai risposto esattamente a {{ userWin.length }} domande</h3>
-                                    <ul v-for="choose in userWin" :key="choose.answer">
+                                    <ul v-for="choose in userWin" :key="choose.userAnswer">
                                         <li class="list-group-item text-white">Alla domanda {{ `"${choose.question}"`
                                         }} hai
-                                            risposto correttamente con <span class="text-success">{{ choose.answer }}</span>
+                                            risposto correttamente con <span class="text-success">{{ choose.userAnswer
+                                            }}</span>
                                         </li>
-                                        <!-- <li class="list-group-item text-success">{{ choose }}</li> -->
                                     </ul>
                                 </div>
                                 <div>
-                                    <h3 class="text-white">Purtroppo hai sbagliato {{ userLose.length }} risposte</h3>
-                                    <ul v-for="choose in userLose" :key="choose.answer">
-                                        <li class="list-group-item text-white">Alla domanda {{ `"${choose.question}"`
-                                        }} hai
-                                            risposto <span class="text-danger">{{ choose.answer }}</span></li>
-                                        <!-- <li class="list-group-item text-danger">{{ choose.answer }}</li> -->
+                                    <h3 class="text-white">Purtroppo hai sbagliato {{ userLose.length }}
+                                        risposte</h3>
+
+                                    <ul v-for="choose in userLose" :key="choose.userAnswer">
+                                        <li class="list-group-item text-white">Alla domanda {{ `"${choose.question}"` }} hai
+                                            risposto
+                                            <span class="text-danger">{{ choose.userAnswer }}. </span>
+                                            <span class="text-white">La risposta corretta era <span class="text-success">{{
+                                                choose.rightAnswer }}</span></span>
+                                        </li>
                                     </ul>
+
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- ...altrimenti vado a avanti col gioco -->
                     <div v-else>
                         <h2 class="text-center text-white my-5">{{ getItemRandom.question }}</h2>
                         <ul class="row justify-content-center align-items-center p-0">
@@ -177,7 +199,7 @@ export default {
                             </li>
 
 
-                            <!-- alerts che danno un feedback sull'esito della risposta -->
+                            <!-- alert che da un feedback in caso di risposta sbagliata -->
                             <div v-if="!isExactly && isClicked"
                                 class="alert alert-danger d-flex justify-content-between align-items-center" role="alert">
                                 Risposta errata! Ritenta con la prossima domanda
@@ -190,7 +212,6 @@ export default {
                             </div>
                         </ul>
                     </div>
-                    <!-- stampo la domanda -->
                 </div>
             </div>
         </div>
