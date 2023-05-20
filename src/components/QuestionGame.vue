@@ -130,11 +130,14 @@ export default {
 </script>
 
 <template>
-    <div class="content-quiz">
-        <div class="row justify-content-center">
-            <div class="col-12">
+    <div class="content-quiz h-100">
+        <div class="">
+            <!-- <div> -->
+            <div class="box-image">
                 <img src="../assets/img/millionaire.jpg" class="img-fluid" alt="millionaire">
-                <div class="question-content">
+            </div>
+            <div class="question-content">
+                <div class="container">
                     <!-- Se il gioco è finito mostro i risultati -->
                     <div v-if="gameOver" class="d-flex justify-content-center">
 
@@ -160,7 +163,7 @@ export default {
                                         </h3>
 
                                         <ul v-for="choose in userWin" :key="choose.userAnswer">
-                                            <li class="list-group-item m-0">Alla domanda {{ `"${choose.question}"`
+                                            <li class="list-group-item">Alla domanda {{ `"${choose.question}"`
                                             }} hai
                                                 risposto con <span class="text-success">{{ choose.userAnswer
                                                 }}</span>
@@ -174,7 +177,8 @@ export default {
 
                                     <!-- almeno una risposta esatta... ma anche almeno una sbagliata... -->
                                     <div v-else-if="userWin.length && userLose.length">
-                                        <h3 v-if="userLose.length === 1">Buona prova, hai sbagliato solo {{ userLose.length
+                                        <h3 v-if="userLose.length === 1">Buona prova, hai sbagliato solo {{
+                                            userLose.length
                                         }}
                                             risposta</h3>
                                         <h3 v-else>Purtroppo hai sbagliato {{ userLose.length }} risposte</h3>
@@ -183,7 +187,7 @@ export default {
 
                                     <!-- mostro le risposte sbagliate e l'opzione che sarebbe stata giusta -->
                                     <ul v-for="choose in userLose" :key="choose.userAnswer">
-                                        <li class="list-group-item m-0">Alla domanda {{ `"${choose.question}"` }} hai
+                                        <li class="list-group-item">Alla domanda {{ `"${choose.question}"` }} hai
                                             risposto
                                             <span class="text-danger">{{ choose.userAnswer }}. </span>
                                             <span>La risposta corretta era <span class="text-success">{{
@@ -223,12 +227,14 @@ export default {
 
                             <!-- alert che da un feedback in caso di risposta sbagliata -->
                             <div v-if="!isExactly && isClicked"
-                                class="alert alert-danger d-flex justify-content-between align-items-center" role="alert">
+                                class="alert alert-danger d-flex flex-column flex-sm-row justify-content-center justify-content-sm-between align-items-center"
+                                role="alert">
                                 Risposta errata! Ritenta con la prossima domanda
                                 <button type="button" class="btn btn-outline-secondary"
                                     @click="playAgain()">Continua</button>
                             </div>
-                            <div v-else-if="!isClicked || isExactly" class="d-flex justify-content-end align-items-center">
+                            <div v-else-if="!isClicked || isExactly"
+                                class="d-flex justify-content-center justify-content-sm-end align-items-center">
                                 <button type="button" class="btn btn-warning mt-2" :disabled="!disabledButton"
                                     @click="playAgain()">Continua</button>
                             </div>
@@ -236,15 +242,14 @@ export default {
                     </div>
                 </div>
             </div>
+            <!-- </div> -->
         </div>
     </div>
 </template>
 
 <style scoped lang="scss">
 .content-quiz {
-    max-width: 1500px;
-    min-height: 600px;
-    border: 2px solid darkgrey;
+    height: 100%;
 }
 
 .question-content {

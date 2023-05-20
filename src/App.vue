@@ -10,9 +10,7 @@ export default {
 
 <template>
   <div id="app">
-    <div class="container">
-      <container-game></container-game>
-    </div>
+    <container-game></container-game>
   </div>
 </template>
 
