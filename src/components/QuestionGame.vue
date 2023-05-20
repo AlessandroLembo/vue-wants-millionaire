@@ -139,6 +139,7 @@ export default {
                     <div v-if="gameOver" class="d-flex justify-content-center">
 
                         <!-- button pe mostrare il punteggio -->
+                        <!-- TODO: FARLO DIVENTARE UN ROUTER LINK CHE PORTA ALLA PAGINA DEI RISULTATI -->
                         <button v-if="!result" type="button" class="btn btn-secondary mt-2" @click="showResult()">Vai al
                             punteggio
                         </button>
@@ -147,25 +148,42 @@ export default {
                         <div v-else>
                             <div class="result">
                                 <div class="me-3">
-                                    <h3>Hai risposto esattamente a {{ userWin.length }}
-                                        <span v-if="userWin.length === 1">domanda</span>
-                                        <span v-else>domande</span>
-                                    </h3>
-                                    <ul v-for="choose in userWin" :key="choose.userAnswer">
-                                        <li class="list-group-item">Alla domanda {{ `"${choose.question}"`
-                                        }} hai
-                                            risposto con <span class="text-success">{{ choose.userAnswer
-                                            }}</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h3 v-if="userLose.length === 1">Ottima prova, hai sbagliato solo {{ userLose.length }}
-                                        risposta</h3>
-                                    <h3 v-else>Purtroppo hai sbagliato {{ userLose.length }} risposte</h3>
+                                    <!-- caso in cui l'utemte dà tutte le risposte esatte -->
+                                    <h3 v-if="!userLose.length">Complimenti!!! Hai risposto esattamente a
+                                        tutte e {{ userWin.length }} le domande.</h3>
 
+                                    <!-- almeno una risposta esatta... ma anche almeno una sbagliata... -->
+                                    <div v-else-if="userWin.length && userLose.length">
+                                        <h3>Hai risposto esattamente a {{ userWin.length }}
+                                            <span v-if="userWin.length === 1">domanda</span>
+                                            <span v-else>domande</span>
+                                        </h3>
+
+                                        <ul v-for="choose in userWin" :key="choose.userAnswer">
+                                            <li class="list-group-item m-0">Alla domanda {{ `"${choose.question}"`
+                                            }} hai
+                                                risposto con <span class="text-success">{{ choose.userAnswer
+                                                }}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <!-- caso in cui l'utente dà tutte le risposte sbagliate -->
+                                    <h3 v-if="!userWin.length">Brutto risultato!!! Purtroppo ha sbagliato tutte e {{
+                                        userLose.length }} le risposte.</h3>
+
+                                    <!-- almeno una risposta esatta... ma anche almeno una sbagliata... -->
+                                    <div v-else-if="userWin.length && userLose.length">
+                                        <h3 v-if="userLose.length === 1">Buona prova, hai sbagliato solo {{ userLose.length
+                                        }}
+                                            risposta</h3>
+                                        <h3 v-else>Purtroppo hai sbagliato {{ userLose.length }} risposte</h3>
+
+                                    </div>
+
+                                    <!-- mostro le risposte sbagliate e l'opzione che sarebbe stata giusta -->
                                     <ul v-for="choose in userLose" :key="choose.userAnswer">
-                                        <li class="list-group-item">Alla domanda {{ `"${choose.question}"` }} hai
+                                        <li class="list-group-item m-0">Alla domanda {{ `"${choose.question}"` }} hai
                                             risposto
                                             <span class="text-danger">{{ choose.userAnswer }}. </span>
                                             <span>La risposta corretta era <span class="text-success">{{
@@ -178,7 +196,7 @@ export default {
                         </div>
                     </div>
 
-                    <!-- ...altrimenti vado a avanti col gioco -->
+                    <!-- ...altrimenti vado avanti col gioco -->
                     <div v-else>
                         <h2 class="text-center text-white my-5">{{ getItemRandom.question }}</h2>
                         <ul class="row justify-content-center align-items-center p-0">
