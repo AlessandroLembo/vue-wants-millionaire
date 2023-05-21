@@ -131,122 +131,116 @@ export default {
 
 <template>
     <div class="content-quiz h-100">
-        <div class="">
-            <!-- <div> -->
-            <div class="box-image">
-                <img src="../assets/img/millionaire.jpg" class="img-fluid" alt="millionaire">
-            </div>
-            <div class="question-content">
-                <div class="container">
-                    <!-- Se il gioco è finito mostro i risultati -->
-                    <div v-if="gameOver" class="d-flex justify-content-center">
+        <div class="box-image">
+            <img src="../assets/img/millionaire.jpg" class="img-fluid" alt="millionaire">
+        </div>
+        <div class="question-content">
+            <div class="container">
+                <!-- Se il gioco è finito mostro i risultati -->
+                <div v-if="gameOver" class="d-flex justify-content-center">
 
-                        <!-- button pe mostrare il punteggio -->
-                        <!-- TODO: FARLO DIVENTARE UN ROUTER LINK CHE PORTA ALLA PAGINA DEI RISULTATI -->
-                        <button v-if="!result" type="button" class="btn btn-secondary mt-2" @click="showResult()">Vai al
-                            punteggio
-                        </button>
+                    <!-- button pe mostrare il punteggio -->
+                    <!-- TODO: FARLO DIVENTARE UN ROUTER LINK CHE PORTA ALLA PAGINA DEI RISULTATI -->
+                    <button v-if="!result" type="button" class="btn btn-secondary mt-2" @click="showResult()">Vai al
+                        punteggio
+                    </button>
 
-                        <!-- resoconto della partita -->
-                        <div v-else>
-                            <div class="result">
-                                <div class="me-3">
-                                    <!-- caso in cui l'utemte dà tutte le risposte esatte -->
-                                    <h3 v-if="!userLose.length">Complimenti!!! Hai risposto esattamente a
-                                        tutte e {{ userWin.length }} le domande.</h3>
+                    <!-- resoconto della partita -->
+                    <div v-else>
+                        <div class="result">
+                            <div class="me-3">
+                                <!-- caso in cui l'utemte dà tutte le risposte esatte -->
+                                <h3 v-if="!userLose.length">Complimenti!!! Hai risposto esattamente a
+                                    tutte e {{ userWin.length }} le domande.</h3>
 
-                                    <!-- almeno una risposta esatta... ma anche almeno una sbagliata... -->
-                                    <div v-else-if="userWin.length && userLose.length">
-                                        <h3>Hai risposto esattamente a {{ userWin.length }}
-                                            <span v-if="userWin.length === 1">domanda</span>
-                                            <span v-else>domande</span>
-                                        </h3>
+                                <!-- almeno una risposta esatta... ma anche almeno una sbagliata... -->
+                                <div v-else-if="userWin.length && userLose.length">
+                                    <h3>Hai risposto esattamente a {{ userWin.length }}
+                                        <span v-if="userWin.length === 1">domanda</span>
+                                        <span v-else>domande</span>
+                                    </h3>
 
-                                        <ul v-for="choose in userWin" :key="choose.userAnswer">
-                                            <li class="list-group-item">Alla domanda {{ `"${choose.question}"`
-                                            }} hai
-                                                risposto con <span class="text-success">{{ choose.userAnswer
-                                                }}</span>
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                    <!-- caso in cui l'utente dà tutte le risposte sbagliate -->
-                                    <h3 v-if="!userWin.length">Brutto risultato!!! Purtroppo ha sbagliato tutte e {{
-                                        userLose.length }} le risposte.</h3>
-
-                                    <!-- almeno una risposta esatta... ma anche almeno una sbagliata... -->
-                                    <div v-else-if="userWin.length && userLose.length">
-                                        <h3 v-if="userLose.length === 1">Buona prova, hai sbagliato solo {{
-                                            userLose.length
-                                        }}
-                                            risposta</h3>
-                                        <h3 v-else>Purtroppo hai sbagliato {{ userLose.length }} risposte</h3>
-
-                                    </div>
-
-                                    <!-- mostro le risposte sbagliate e l'opzione che sarebbe stata giusta -->
-                                    <ul v-for="choose in userLose" :key="choose.userAnswer">
-                                        <li class="list-group-item">Alla domanda {{ `"${choose.question}"` }} hai
-                                            risposto
-                                            <span class="text-danger">{{ choose.userAnswer }}. </span>
-                                            <span>La risposta corretta era <span class="text-success">{{
-                                                choose.rightAnswer }}</span></span>
+                                    <ul v-for="choose in userWin" :key="choose.userAnswer">
+                                        <li class="list-group-item">Alla domanda {{ `"${choose.question}"`
+                                        }} hai
+                                            risposto con <span class="text-success">{{ choose.userAnswer
+                                            }}</span>
                                         </li>
                                     </ul>
+                                </div>
+
+                                <!-- caso in cui l'utente dà tutte le risposte sbagliate -->
+                                <h3 v-if="!userWin.length">Brutto risultato!!! Purtroppo ha sbagliato tutte e {{
+                                    userLose.length }} le risposte.</h3>
+
+                                <!-- almeno una risposta esatta... ma anche almeno una sbagliata... -->
+                                <div v-else-if="userWin.length && userLose.length">
+                                    <h3 v-if="userLose.length === 1">Buona prova, hai sbagliato solo {{
+                                        userLose.length
+                                    }}
+                                        risposta</h3>
+                                    <h3 v-else>Purtroppo hai sbagliato {{ userLose.length }} risposte</h3>
 
                                 </div>
-                                <div class="d-flex justify-content-end">
-                                    <a href="http://localhost:8080/"><button type="button" class="btn btn-secondary">Nuova
-                                            partita</button></a>
-                                </div>
+
+                                <!-- mostro le risposte sbagliate e l'opzione che sarebbe stata giusta -->
+                                <ul v-for="choose in userLose" :key="choose.userAnswer">
+                                    <li class="list-group-item">Alla domanda {{ `"${choose.question}"` }} hai
+                                        risposto
+                                        <span class="text-danger">{{ choose.userAnswer }}. </span>
+                                        <span>La risposta corretta era <span class="text-success">{{
+                                            choose.rightAnswer }}</span></span>
+                                    </li>
+                                </ul>
+
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <a href="http://localhost:8080/"><button type="button" class="btn btn-warning">Nuova
+                                        partita</button></a>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- ...altrimenti vado avanti col gioco -->
-                    <div v-else>
-                        <h2 class="text-center text-white my-5">{{ getItemRandom.question }}</h2>
-                        <ul class="row justify-content-center align-items-center p-0">
+                <!-- ...altrimenti vado avanti col gioco -->
+                <div v-else>
+                    <h2 class="text-center text-white my-5">{{ getItemRandom.question }}</h2>
+                    <ul class="row justify-content-center align-items-center p-0">
 
-                            <!-- giro sull'array delle opzioni di risposta alla domanda e le stampo in pagina -->
-                            <li v-for="(answer, i) in getAnswers" :key="answer.answer"
-                                class="col-12 col-sm-5 list-group-item text-center p-2">
+                        <!-- giro sull'array delle opzioni di risposta alla domanda e le stampo in pagina -->
+                        <li v-for="(answer, i) in getAnswers" :key="answer.answer"
+                            class="col-12 col-sm-5 list-group-item text-center p-2">
 
-                                <!-- controllo la risposta e assegno al blocco un colore diverso a seconda che sia giusta o meno -->
-                                <div :class="{ 'bg-success': answer.isclicked && isExactly || isClicked && answer.rightAnswer, 'bg-danger': answer.isclicked && !answer.rightAnswer && isWrong }"
-                                    class="row justify-content-center justify-content-md-start align-items-center box-answer g-2 p-0 answer">
-                                    <input type="radio" class="col-12 col-md-6 mx-md-4 mx-1 choose-user" :id="answer.answer"
-                                        :value="answer.answer" v-model="userAnswer" name="city" @change="getUserAnswer(i)"
-                                        :disabled="disabledRadio">
-                                    <label :for="answer.answer" class="col-12 col-md-6">
-                                        <div
-                                            class="d-flex align-items-center justify-content-center justify-content-md-start">
-                                            <p class="m-0 fs-6 city-option">{{ answer.answer.toUpperCase() }}</p>
-                                        </div>
-                                    </label>
-                                </div>
-                            </li>
-
-
-                            <!-- alert che da un feedback in caso di risposta sbagliata -->
-                            <div v-if="!isExactly && isClicked"
-                                class="alert alert-danger d-flex flex-column flex-sm-row justify-content-center justify-content-sm-between align-items-center"
-                                role="alert">
-                                Risposta errata! Ritenta con la prossima domanda
-                                <button type="button" class="btn btn-outline-secondary"
-                                    @click="playAgain()">Continua</button>
+                            <!-- controllo la risposta e assegno al blocco un colore diverso a seconda che sia giusta o meno -->
+                            <div :class="{ 'bg-success': answer.isclicked && isExactly || isClicked && answer.rightAnswer, 'bg-danger': answer.isclicked && !answer.rightAnswer && isWrong }"
+                                class="row justify-content-center justify-content-md-start align-items-center box-answer g-2 p-0 answer">
+                                <input type="radio" class="col-12 col-md-6 mx-md-4 mx-1 choose-user" :id="answer.answer"
+                                    :value="answer.answer" v-model="userAnswer" name="city" @change="getUserAnswer(i)"
+                                    :disabled="disabledRadio">
+                                <label :for="answer.answer" class="col-12 col-md-6">
+                                    <div class="d-flex align-items-center justify-content-center justify-content-md-start">
+                                        <p class="m-0 fs-6 city-option">{{ answer.answer.toUpperCase() }}</p>
+                                    </div>
+                                </label>
                             </div>
-                            <div v-else-if="!isClicked || isExactly"
-                                class="d-flex justify-content-center justify-content-sm-end align-items-center">
-                                <button type="button" class="btn btn-warning mt-2" :disabled="!disabledButton"
-                                    @click="playAgain()">Continua</button>
-                            </div>
-                        </ul>
-                    </div>
+                        </li>
+
+
+                        <!-- alert che da un feedback in caso di risposta sbagliata -->
+                        <div v-if="!isExactly && isClicked"
+                            class="alert alert-danger d-flex flex-column flex-sm-row justify-content-center justify-content-sm-between align-items-center"
+                            role="alert">
+                            Risposta errata! Ritenta con la prossima domanda
+                            <button type="button" class="btn btn-outline-secondary" @click="playAgain()">Continua</button>
+                        </div>
+                        <div v-else-if="!isClicked || isExactly"
+                            class="d-flex justify-content-center justify-content-sm-end align-items-center">
+                            <button type="button" class="btn btn-warning mt-2" :disabled="!disabledButton"
+                                @click="playAgain()">Continua</button>
+                        </div>
+                    </ul>
                 </div>
             </div>
-            <!-- </div> -->
         </div>
     </div>
 </template>
