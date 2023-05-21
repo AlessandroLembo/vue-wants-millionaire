@@ -196,6 +196,10 @@ export default {
                                     </ul>
 
                                 </div>
+                                <div class="d-flex justify-content-end">
+                                    <a href="http://localhost:8080/"><button type="button" class="btn btn-secondary">Nuova
+                                            partita</button></a>
+                                </div>
                             </div>
                         </div>
                     </div>
