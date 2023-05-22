@@ -133,7 +133,7 @@ export default {
 
 <template>
     <div class="content-quiz h-100">
-        <question-game :pippo="getItemRandom" :ciccio="getAnswers"></question-game>
+        <question-game :question="getItemRandom" :answers="getAnswers"></question-game>
         <answers-game></answers-game>
         <div class="box-image">
             <img src="../assets/img/millionaire.jpg" class="img-fluid" alt="millionaire">

@@ -4,16 +4,16 @@
 export default {
     name: "QuestionGame",
     props: {
-        pippo: Object,
-        ciccio: Array
+        question: Object,
+        answers: Array
     },
     computed: {
         getQ() {
-            return this.pippo;
+            return this.question;
         },
 
         getA() {
-            return this.ciccio;
+            return this.answers;
         }
     }
 }
