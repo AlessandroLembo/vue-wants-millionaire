@@ -228,9 +228,9 @@ export default {
 
                         <!-- alert che da un feedback in caso di risposta sbagliata -->
                         <div v-if="!isExactly && isClicked"
-                            class="alert alert-danger d-flex flex-column flex-sm-row justify-content-center justify-content-sm-between align-items-center"
+                            class="alert alert-danger d-flex flex-column flex-sm-row justify-content-center justify-content-sm-between align-items-center fs-3"
                             role="alert">
-                            Risposta errata! Ritenta con la prossima domanda
+                            Risposta errata! Vai alla prossima domanda..
                             <button type="button" class="btn btn-outline-secondary" @click="playAgain()">Continua</button>
                         </div>
                         <div v-else-if="!isClicked || isExactly"
