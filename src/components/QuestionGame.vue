@@ -49,7 +49,7 @@ export default {
         },
 
         // prendo dall'array di risposte solo quella giusta
-        filterAnswer() {
+        filterRightAnswer() {
             const rightAns = [];
             this.getAnswers.filter(ans => {
                 if (ans.rightAnswer) rightAns.push(ans.answer);
@@ -88,7 +88,7 @@ export default {
                 choose = {
                     question: this.getItemRandom.question,
                     userAnswer: this.userAnswer,
-                    rightAnswer: this.filterAnswer // valore restituito dalla computed è la risposta giusta a ogni domanda
+                    rightAnswer: this.filterRightAnswer // valore restituito dalla computed è la risposta giusta a ogni domanda
                 };
                 this.userLose.push(choose);
             }
