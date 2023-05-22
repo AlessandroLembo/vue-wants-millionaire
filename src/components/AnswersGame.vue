@@ -1,25 +1,11 @@
 <script>
-import { questions } from "../data";
-import AnswersGame from "./AnswersGame.vue";
 
 export default {
     name: "AnswersGame",
-    components: { AnswersGame },
-    data() {
-        return {
-            questions,
-        }
-    },
-    computed: {
-        getQ() {
-            return questions;
-        }
-    }
+
 }
 </script>
 
-<template>
-    <answers-game></answers-game>
-</template>
+<template></template>
 
-<style></style>
+<style scoped lang="scss"></style>
