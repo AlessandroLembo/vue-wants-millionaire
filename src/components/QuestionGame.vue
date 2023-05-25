@@ -5,20 +5,13 @@ export default {
     name: "QuestionGame",
     props: {
         question: Object,
-        answers: Array
     },
-    computed: {
-        getQ() {
-            return this.question;
-        },
 
-        getA() {
-            return this.answers;
-        }
-    }
 }
 </script>
 
-<template></template>
+<template>
+    <h2 class="text-center text-white my-5">{{ question.question }}</h2>
+</template>
 
 <style scoped lang="scss"></style>
