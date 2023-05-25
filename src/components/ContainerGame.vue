@@ -63,49 +63,60 @@ export default {
     },
 
     methods: {
-        getUserAnswer(i) {
+        getUserAnswer(userAnswer) {
+
             // inizializzo il flag che utlizzo nel template con valore false
             this.isExactly = false;
+
+            // disabilito i radios e dichiaro che è stat selezionata una risposta
             this.isClicked = true;
             this.disabledRadio = true;
 
             // Gestico l'attivazione del button continua 
-            if (this.userAnswer) this.disabledButton = true;
+            if (userAnswer) this.disabledButton = true;
 
-            // controllo se la risposta singola corrisponde alla risposta dell'utente e se la risposta è giusta
             let choose = {};
 
-            if (this.getAnswers[i].answer === this.userAnswer && this.getAnswers[i].rightAnswer) {
-                this.isExactly = true;
-                choose = {
-                    question: this.getItemRandom.question,
-                    userAnswer: this.userAnswer,
+            // giro sull'aarray di risposte e controllo...
+            this.getAnswers.forEach(ans => {
+
+                //...se la risposta equivale alla scelta dell'utente e la risposta è quella giusta..
+                if (ans.answer === userAnswer && ans.rightAnswer) {
+                    this.isExactly = true;
+                    choose = {
+                        question: this.getItemRandom.question,
+                        userChoose: userAnswer
+                    }
+                    this.userWin.push(choose);
+
+                    //...se la risposta equivale alla scelta dell'utente ma è sbagliata..
+                } else if (ans.answer === userAnswer && !ans.rightAnswer) {
+                    this.isExactly = false;
+                    this.isWrong = true;
+                    choose = {
+                        question: this.getItemRandom.question,
+                        userChoose: userAnswer,
+                        rightAnswer: this.filterRightAnswer // raccolgo in una variabile la risposta esatta
+                    };
+                    this.userLose.push(choose);
                 }
-                this.userWin.push(choose);
+            })
+            this.userAnswer = userAnswer; // assegno alla stringa userAnswer la risposta dell'utente proveniente dal componente figlio
 
-                // risposta sbagliata da parte dell'utente
-            } else if (this.getAnswers[i].answer === this.userAnswer && !this.getAnswers[i].rightAnswer) {
-                this.isExactly = false;
-                this.isWrong = true;
-                choose = {
-                    question: this.getItemRandom.question,
-                    userAnswer: this.userAnswer,
-                    rightAnswer: this.filterRightAnswer // valore restituito dalla computed è la risposta giusta a ogni domanda
-                };
-                this.userLose.push(choose);
-            }
-
-            this.cleanRadios(i);
+            this.cleanRadios();
         },
 
-        cleanRadios(i) {
+        cleanRadios() {
             // giro sull'array di risposte e le dichiaro non cliccate
             this.getAnswers.map(ans => {
-                return ans.isclicked = false;
+                ans.isclicked = false;
+                if (this.userAnswer === ans.answer) {
+
+                    // cambio la proprietà 'isClicked' solo alla risposta selezionata
+                    return ans.isclicked = true;
+                }
             })
 
-            // cambio la proprietà 'isClicked' solo alla risposta selezionata
-            return this.getAnswers[i].isclicked = true;
         },
 
         playAgain() {
@@ -133,8 +144,6 @@ export default {
 
 <template>
     <div class="content-quiz h-100">
-        <question-game :question="getItemRandom" :answers="getAnswers"></question-game>
-        <answers-game></answers-game>
         <div class="box-image">
             <img src="../assets/img/millionaire.jpg" class="img-fluid" alt="millionaire">
         </div>
@@ -164,10 +173,10 @@ export default {
                                         <span v-else>domande</span>
                                     </h3>
 
-                                    <ul v-for="choose in userWin" :key="choose.userAnswer">
+                                    <ul v-for="choose in userWin" :key="choose.userChoose">
                                         <li class="list-group-item">Alla domanda {{ `"${choose.question}"`
                                         }} hai
-                                            risposto con <span class="text-success">{{ choose.userAnswer
+                                            risposto con <span class="text-success">{{ choose.userChoose
                                             }}</span>
                                         </li>
                                     </ul>
@@ -191,7 +200,7 @@ export default {
                                 <ul v-for="choose in userLose" :key="choose.userAnswer">
                                     <li class="list-group-item">Alla domanda {{ `"${choose.question}"` }} hai
                                         risposto
-                                        <span class="text-danger">{{ choose.userAnswer }}. </span>
+                                        <span class="text-danger">{{ choose.userChoose }}. </span>
                                         <span>La risposta corretta era <span class="text-success">{{
                                             choose.rightAnswer }}</span></span>
                                     </li>
@@ -208,41 +217,11 @@ export default {
 
                 <!-- ...altrimenti vado avanti col gioco -->
                 <div v-else>
-                    <h2 class="text-center text-white my-5">{{ getItemRandom.question }}</h2>
-                    <ul class="row justify-content-center align-items-center p-0">
+                    <question-game :question="getItemRandom"></question-game>
 
-                        <!-- giro sull'array delle opzioni di risposta alla domanda e le stampo in pagina -->
-                        <li v-for="(answer, i) in getAnswers" :key="answer.answer"
-                            class="col-12 col-sm-5 list-group-item text-center p-2">
-
-                            <!-- controllo la risposta e assegno al blocco un colore diverso a seconda che sia giusta o meno -->
-                            <div :class="{ 'bg-success': answer.isclicked && isExactly || isClicked && answer.rightAnswer, 'bg-danger': answer.isclicked && !answer.rightAnswer && isWrong }"
-                                class="row justify-content-center justify-content-md-start align-items-center box-answer g-2 p-0 answer">
-                                <input type="radio" class="col-12 col-md-6 mx-md-4 mx-1 choose-user" :id="answer.answer"
-                                    :value="answer.answer" v-model="userAnswer" name="city" @change="getUserAnswer(i)"
-                                    :disabled="disabledRadio">
-                                <label :for="answer.answer" class="col-12 col-md-6">
-                                    <div class="d-flex align-items-center justify-content-center justify-content-md-start">
-                                        <p class="m-0 fs-6 city-option">{{ answer.answer.toUpperCase() }}</p>
-                                    </div>
-                                </label>
-                            </div>
-                        </li>
-
-
-                        <!-- alert che da un feedback in caso di risposta sbagliata -->
-                        <div v-if="!isExactly && isClicked"
-                            class="alert alert-danger d-flex flex-column flex-sm-row justify-content-center justify-content-sm-between align-items-center fs-3"
-                            role="alert">
-                            Risposta errata! Vai alla prossima domanda..
-                            <button type="button" class="btn btn-outline-secondary" @click="playAgain()">Continua</button>
-                        </div>
-                        <div v-else-if="!isClicked || isExactly"
-                            class="d-flex justify-content-center justify-content-sm-end align-items-center">
-                            <button type="button" class="btn btn-warning mt-2" :disabled="!disabledButton"
-                                @click="playAgain()">Continua</button>
-                        </div>
-                    </ul>
+                    <answers-game :answers="getAnswers" :isExactly="isExactly" :isClicked="isClicked" :isWrong="isWrong"
+                        :disabledRadio="disabledRadio" :disabledButton="disabledButton" @user-choose="getUserAnswer"
+                        @continue-game="playAgain"></answers-game>
                 </div>
             </div>
         </div>
@@ -264,27 +243,5 @@ export default {
     min-height: 100px;
     border: 10px solid darkgoldenrod;
     padding: 1rem;
-}
-
-.box-answer {
-    border: 2px solid goldenrod;
-    height: 70px;
-    border-radius: 20px;
-
-}
-
-.choose-user {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-}
-
-.answer:hover {
-    background-color: dodgerblue;
-}
-
-.city-option {
-    color: white;
-
 }
 </style>
