@@ -1,10 +1,9 @@
 <script>
-import ContainerGame from "./components/ContainerGame.vue";
+import ContainerGame from './components/ContainerGame.vue';
+// import ContainerGame from "./components/ContainerGame.vue";
 export default {
   name: "AppVue",
-  components: {
-    ContainerGame
-  },
+  components: { ContainerGame }
 };
 </script>
 
