@@ -1,5 +1,4 @@
 <script>
-// import { questions } from '@/data';
 
 export default {
     name: "QuestionGame",
