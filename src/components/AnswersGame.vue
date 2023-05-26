@@ -15,9 +15,6 @@ export default {
             userAnswer: ''
         }
     },
-    computed: {
-
-    },
 
     emits: ['user-choose', 'continue-game'],
 
