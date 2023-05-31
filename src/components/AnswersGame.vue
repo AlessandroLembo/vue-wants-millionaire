@@ -19,7 +19,7 @@ export default {
     },
 
 
-    emits: ['user-choose', 'continue-game'],
+    emits: ['user-choose', 'continue-game', 'game-over'],
 
 }
 </script>
@@ -45,8 +45,8 @@ export default {
         <div v-if="!isExactly && isClicked"
             class="alert alert-danger d-flex flex-column flex-sm-row justify-content-center justify-content-sm-between align-items-center fs-3"
             role="alert">
-            Risposta errata! Vai alla prossima domanda..
-            <button type="button" class="btn btn-outline-secondary" @click="$emit('continue-game')">Continua</button>
+            Risposta errata!
+            <button type="button" class="btn btn-outline-secondary" @click="$emit('game-over')">Vai al punteggio</button>
         </div>
         <div v-else-if="!isClicked || isExactly"
             class="d-flex justify-content-center justify-content-sm-end align-items-center">
