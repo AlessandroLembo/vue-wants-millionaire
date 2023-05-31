@@ -15,9 +15,9 @@ export default {
             disabledRadio: false,
             disabledButton: false,
             questionsDone: [],
+            questionsUndone: [],
             start: false,
             gameOver: false,
-            lastQuestion: false,
             result: false,
             userWin: [],
             userLose: [],
@@ -26,21 +26,20 @@ export default {
     computed: {
         // ottenere una domanda random dall'array questions
         getItemRandom() {
-            const item = questions[Math.floor(Math.random() * questions.length)];
-            const index = questions.indexOf(item);
+            const item = this.questionsUndone[Math.floor(Math.random() * this.questionsUndone.length)];
+            const index = this.questionsUndone.indexOf(item);
 
             if (!this.start) { // Appena iniziato il gioco gestisco i movimenti negli array delle domande fatte e non fatte
                 this.questionsDone.push(item);
-                questions.splice(index, 1);
-            } else if (questions.length >= 1) {
+                this.questionsUndone.splice(index, 1);
+            } else if (this.questionsUndone.length >= 1) {
                 this.start = false; // con il booleano gestiso il cambio domanda passando alla successiva
                 this.questionsDone.push(item);
-                questions.splice(index, 1);
+                this.questionsUndone.splice(index, 1);
             } else {
-                this.lastQuestion = true;
+                this.gameOver = true;
             }
 
-            if (this.lastQuestion) this.gameOver = true; // ..dopo aver risposto all'ultima domanda
             return item;
 
         },
@@ -77,7 +76,7 @@ export default {
 
             let choose = {};
 
-            // giro sull'aarray di risposte e controllo...
+            // giro sull'array di risposte e controllo...
             this.getAnswers.forEach(ans => {
 
                 //...se la risposta equivale alla scelta dell'utente e la risposta è quella giusta..
@@ -99,8 +98,10 @@ export default {
                         rightAnswer: this.filterRightAnswer // raccolgo in una variabile la risposta esatta
                     };
                     this.userLose.push(choose);
+                    this.gameOver = true;
                 }
             })
+
             this.userAnswer = userAnswer; // assegno alla stringa userAnswer la risposta dell'utente proveniente dal componente figlio
 
             this.cleanRadios();
@@ -138,6 +139,10 @@ export default {
             this.result = true;
         }
 
+    },
+
+    created() {
+        this.questionsUndone = [...questions]; // alla visualizzazione della pagina faccio una copia dell'array questions
     }
 };
 </script>
@@ -151,7 +156,7 @@ export default {
             <div class="question-content">
                 <div class="container">
                     <!-- Se il gioco è finito mostro i risultati -->
-                    <div v-if="gameOver" class="d-flex justify-content-center">
+                    <div v-if="gameOver && !userLose.length" class="d-flex justify-content-center">
 
                         <!-- button pe mostrare il punteggio -->
                         <div>
@@ -167,53 +172,47 @@ export default {
 
                         <answers-game :answers="getAnswers" :isExactly="isExactly" :isClicked="isClicked" :isWrong="isWrong"
                             :disabledRadio="disabledRadio" :disabledButton="disabledButton" @user-choose="getUserAnswer"
-                            @continue-game="playAgain"></answers-game>
+                            @continue-game="playAgain" @game-over="showResult"></answers-game>
                     </div>
                 </div>
             </div>
 
         </div>
+
         <!-- resoconto della partita -->
         <div v-else>
             <h1 class="text-center result-text mt-5">PUNTEGGIO TOTALE</h1>
             <div class="result container mt-5">
                 <div class="me-3">
                     <!-- caso in cui l'utemte dà tutte le risposte esatte -->
-                    <h3 v-if="!userLose.length">Complimenti!!! Hai risposto esattamente a
+                    <h3 v-if="!userLose.length">Complimenti, hai vinto!!! Hai risposto esattamente a
                         tutte e {{ userWin.length }} le domande.</h3>
 
-                    <!-- almeno una risposta esatta... ma anche almeno una sbagliata... -->
-                    <div v-else-if="userWin.length && userLose.length">
-                        <h3>Hai risposto esattamente a {{ userWin.length }}
+                    <!-- caso in cui l'utente sbaglia al primo colpo -->
+                    <h3 v-else-if="!userWin.length">Brutto risultato!!! Purtroppo il tuo gioco si ferma al {{
+                        userLose.length }}° step.</h3>
+
+                    <!-- caso in cui l'utente sbaglia l'ultima domanda -->
+                    <h3 v-else-if="userLose.length && userWin.length === questions.length - 1">
+                        Peccato, eri a un passo dalla vittoria, ti
+                        sei fermato all'ultimo scalino!!
+                    </h3>
+
+                    <!-- l'utente risponde esattamente ad almeno una domanda ma si ferma almeno a due risposte dalla fine -->
+                    <div v-else-if="userLose.length && userWin.length < questions.length - 1">
+                        <h3>
+                            Hai risposto esattamente a {{
+                                userWin.length }}
                             <span v-if="userWin.length === 1">sola domanda</span>
                             <span v-else>domande</span>
                         </h3>
-
-                        <ul v-for="choose in userWin" :key="choose.userChoose">
-                            <li class="list-group-item">Alla domanda {{ `"${choose.question}"`
-                            }} hai
-                                risposto con <span class="text-success">{{ choose.userChoose
-                                }}</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- caso in cui l'utente dà tutte le risposte sbagliate -->
-                    <h3 v-if="!userWin.length">Brutto risultato!!! Purtroppo ha sbagliato tutte e {{
-                        userLose.length }} le risposte.</h3>
-
-                    <!-- almeno una risposta esatta... ma anche almeno una sbagliata... -->
-                    <div v-else-if="userWin.length && userLose.length">
-                        <h3 v-if="userLose.length === 1">Buona prova, hai sbagliato solo {{
-                            userLose.length
-                        }}
-                            risposta</h3>
-                        <h3 v-else>Purtroppo hai sbagliato {{ userLose.length }} risposte</h3>
-
                     </div>
 
                     <!-- mostro le risposte sbagliate e l'opzione che sarebbe stata giusta -->
                     <ul v-for="choose in userLose" :key="choose.userAnswer">
+                        <li v-if="userWin.length < questions.length - 1" class="list-group-item">
+                            <h4>La tua scalata si è fermata qui:</h4>
+                        </li>
                         <li class="list-group-item">Alla domanda {{ `"${choose.question}"` }} hai
                             risposto
                             <span class="text-danger">{{ choose.userChoose }}. </span>
