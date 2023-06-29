@@ -146,6 +146,8 @@ export default {
             this.userAnswer = '';
             this.isExactly = false;
             this.isWrong = false;
+            this.reactionTime = 1000;
+            this.startTimer();
 
         },
 
