@@ -67,6 +67,7 @@ export default {
     },
 
     methods: {
+
         // metodo per attivare il countdown ogni volta che si cambia domanda
         startTimer() {
             this.timer = setInterval(() => {
@@ -178,6 +179,7 @@ export default {
             <div class="box-image">
                 <img src="../assets/img/millionaire.jpg" class="img-fluid" alt="millionaire">
             </div>
+
             <div class="question-content">
 
                 <div class="container">
@@ -271,6 +273,7 @@ export default {
                 <div class="d-flex justify-content-end">
                     <a href="http://localhost:8080/"><button type="button" class="btn btn-warning">Nuova
                             partita</button></a>
+
                 </div>
             </div>
         </div>
