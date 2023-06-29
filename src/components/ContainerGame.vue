@@ -22,7 +22,7 @@ export default {
             userWin: [],
             userLose: [],
             timer: null,
-            reactionTime: 15,
+            reactionTime: 5,
             finishTime: false,
             choose: {},
         }
@@ -76,7 +76,7 @@ export default {
                     this.isClicked = true;
                     this.finishTime = true;
                     this.disabledRadio = true;
-                    // this.userLose.push('tempo scaduto');
+                    this.userLose.push('tempo scaduto'); // gestiscp il caso in cui l'utente non risponde in tempo alla prima domanda
                 }
             }, 1000);
 
@@ -153,7 +153,7 @@ export default {
             this.userAnswer = '';
             this.isExactly = false;
             this.isWrong = false;
-            this.reactionTime = 15; // al cambio domanda imposto nuovamente il timer 
+            this.reactionTime = 5; // al cambio domanda imposto nuovamente il timer 
             if (!this.gameOver) this.startTimer(); // faccio partire il timer se la partita non è finita
 
         },
@@ -179,6 +179,7 @@ export default {
                 <img src="../assets/img/millionaire.jpg" class="img-fluid" alt="millionaire">
             </div>
             <div class="question-content">
+
                 <div class="container">
                     <!-- Se il gioco è finito mostro i risultati -->
                     <div v-if="gameOver && !userLose.length" class="d-flex justify-content-center">
@@ -193,25 +194,25 @@ export default {
 
                     <!-- ...altrimenti vado avanti col gioco -->
                     <div v-else>
-                        <div class="row flex-column flex-sm-row align-items-center justify-content-center">
-                            <div class="col-sm-11">
-                                <question-game :question="getItemRandom"></question-game>
+                        <question-game :question="getItemRandom"></question-game>
 
-                                <answers-game :answers="getAnswers" :isExactly="isExactly" :isClicked="isClicked"
-                                    :isWrong="isWrong" :disabledRadio="disabledRadio" :disabledButton="disabledButton"
-                                    :finishTime="finishTime" @user-choose="getUserAnswer" @continue-game="playAgain"
-                                    @game-over="showResult"></answers-game>
-                            </div>
-                            <div class="col-sm-1 text-white mt-2 d-flex justify-content-center">
-                                <div>
-                                    <i class="fa-solid fa-hourglass-half fa-beat-fade"></i>
-                                    <h3>{{ reactionTime }}</h3>
+                        <answers-game :answers="getAnswers" :isExactly="isExactly" :isClicked="isClicked" :isWrong="isWrong"
+                            :disabledRadio="disabledRadio" :disabledButton="disabledButton" :finishTime="finishTime"
+                            @user-choose="getUserAnswer" @continue-game="playAgain" @game-over="showResult"></answers-game>
+
+                        <div v-if="!isClicked" class="text-white">
+                            <div class="d-flex flex-column align-items-center justify-content-center box-time text-primary">
+                                <h5>Time</h5>
+                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                    <i class="fa-solid fa-hourglass-half fa-beat-fade fa-2x me-2"></i>
+                                    <h2>{{ reactionTime }}s </h2>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
+
+
             </div>
 
         </div>
@@ -259,8 +260,8 @@ export default {
                             </li>
                             <li class="list-group-item">Alla domanda {{ `"${choose.question}"` }} hai
                                 risposto
-                                <span class="text-danger">{{ choose.userChoose }}. </span>
-                                <span>La risposta corretta era <span class="text-success">{{
+                                <span class="text-danger fs-3">{{ choose.userChoose }}. </span>
+                                <span>La risposta corretta era <span class="text-success fs-3">{{
                                     choose.rightAnswer }}</span></span>
                             </li>
                         </ul>
@@ -284,6 +285,15 @@ export default {
 .question-content {
     padding: 2rem;
     background-color: darkblue;
+}
+
+.box-time {
+    width: 100px;
+    height: 100px;
+    background-color: whitesmoke;
+    padding: 10px;
+    box-shadow: 2px 2px darkgray;
+    border-radius: 5px;
 }
 
 .result-text {
