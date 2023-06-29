@@ -21,6 +21,8 @@ export default {
             result: false,
             userWin: [],
             userLose: [],
+            timer: null,
+            reactionTime: 1000,
         }
     },
     computed: {
@@ -57,12 +59,25 @@ export default {
             })
             const [rigAns] = rightAns; // prendo dall'array la stringa e la salvo in una variabile
             return rigAns;
-        }
+        },
 
     },
 
     methods: {
+        // metodo per attivare il countdown ogni volta che si cambia domanda
+        startTimer() {
+            this.timer = setInterval(() => {
+                this.reactionTime = this.reactionTime - 1;
+                console.log(this.reactionTime);
+            }, 1000);
+
+            return this.reactionTime;
+        },
+
         getUserAnswer(userAnswer) {
+
+            // stoppo il tempo quando l'utente seleziona una risposta
+            clearInterval(this.timer);
 
             // inizializzo il flag che utlizzo nel template con valore false
             this.isExactly = false;
@@ -137,12 +152,13 @@ export default {
         // metodo per mostrare il risultato
         showResult() {
             this.result = true;
-        }
+        },
 
     },
 
     created() {
         this.questionsUndone = [...questions]; // alla visualizzazione della pagina faccio una copia dell'array questions
+        this.startTimer(); // faccio partire il timer alla visualizzazione della domanda
     }
 };
 </script>
@@ -178,7 +194,7 @@ export default {
                                     @game-over="showResult"></answers-game>
                             </div>
                             <div class="col-sm-1 text-white mt-2 d-flex justify-content-center">
-                                <h3 @continue-game="playAgain">10</h3>
+                                <h3>{{ reactionTime }}</h3>
                             </div>
 
                         </div>
