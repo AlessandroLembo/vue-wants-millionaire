@@ -168,11 +168,20 @@ export default {
 
                     <!-- ...altrimenti vado avanti col gioco -->
                     <div v-else>
-                        <question-game :question="getItemRandom"></question-game>
+                        <div class="row flex-column flex-sm-row align-items-center justify-content-center">
+                            <div class="col-sm-11">
+                                <question-game :question="getItemRandom"></question-game>
 
-                        <answers-game :answers="getAnswers" :isExactly="isExactly" :isClicked="isClicked" :isWrong="isWrong"
-                            :disabledRadio="disabledRadio" :disabledButton="disabledButton" @user-choose="getUserAnswer"
-                            @continue-game="playAgain" @game-over="showResult"></answers-game>
+                                <answers-game :answers="getAnswers" :isExactly="isExactly" :isClicked="isClicked"
+                                    :isWrong="isWrong" :disabledRadio="disabledRadio" :disabledButton="disabledButton"
+                                    @user-choose="getUserAnswer" @continue-game="playAgain"
+                                    @game-over="showResult"></answers-game>
+                            </div>
+                            <div class="col-sm-1 text-white mt-2 d-flex justify-content-center">
+                                <h3 @continue-game="playAgain">10</h3>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
