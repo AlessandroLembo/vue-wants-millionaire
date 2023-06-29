@@ -22,7 +22,9 @@ export default {
             userWin: [],
             userLose: [],
             timer: null,
-            reactionTime: 1000,
+            reactionTime: 15,
+            finishTime: false,
+            choose: {},
         }
     },
     computed: {
@@ -54,9 +56,10 @@ export default {
         // prendo dall'array di risposte solo quella giusta
         filterRightAnswer() {
             const rightAns = [];
-            this.getAnswers.filter(ans => {
+            this.getAnswers?.filter(ans => {
                 if (ans.rightAnswer) rightAns.push(ans.answer);
             })
+
             const [rigAns] = rightAns; // prendo dall'array la stringa e la salvo in una variabile
             return rigAns;
         },
@@ -68,7 +71,13 @@ export default {
         startTimer() {
             this.timer = setInterval(() => {
                 this.reactionTime = this.reactionTime - 1;
-                console.log(this.reactionTime);
+                if (this.reactionTime <= 0) {
+                    clearInterval(this.timer); // stoppo il countdown quando scade il tempo
+                    this.isClicked = true;
+                    this.finishTime = true;
+                    this.disabledRadio = true;
+                    // this.userLose.push('tempo scaduto');
+                }
             }, 1000);
 
             return this.reactionTime;
@@ -89,30 +98,28 @@ export default {
             // Gestico l'attivazione del button continua 
             if (userAnswer) this.disabledButton = true;
 
-            let choose = {};
-
             // giro sull'array di risposte e controllo...
             this.getAnswers.forEach(ans => {
 
                 //...se la risposta equivale alla scelta dell'utente e la risposta è quella giusta..
                 if (ans.answer === userAnswer && ans.rightAnswer) {
                     this.isExactly = true;
-                    choose = {
+                    this.choose = {
                         question: this.getItemRandom.question,
                         userChoose: userAnswer
                     }
-                    this.userWin.push(choose);
+                    this.userWin.push(this.choose);
 
                     //...se la risposta equivale alla scelta dell'utente ma è sbagliata..
                 } else if (ans.answer === userAnswer && !ans.rightAnswer) {
                     this.isExactly = false;
                     this.isWrong = true;
-                    choose = {
+                    this.choose = {
                         question: this.getItemRandom.question,
                         userChoose: userAnswer,
                         rightAnswer: this.filterRightAnswer // raccolgo in una variabile la risposta esatta
                     };
-                    this.userLose.push(choose);
+                    this.userLose.push(this.choose);
                     this.gameOver = true;
                 }
             })
@@ -146,8 +153,8 @@ export default {
             this.userAnswer = '';
             this.isExactly = false;
             this.isWrong = false;
-            this.reactionTime = 1000;
-            this.startTimer();
+            this.reactionTime = 15; // al cambio domanda imposto nuovamente il timer 
+            if (!this.gameOver) this.startTimer(); // faccio partire il timer se la partita non è finita
 
         },
 
@@ -192,7 +199,7 @@ export default {
 
                                 <answers-game :answers="getAnswers" :isExactly="isExactly" :isClicked="isClicked"
                                     :isWrong="isWrong" :disabledRadio="disabledRadio" :disabledButton="disabledButton"
-                                    @user-choose="getUserAnswer" @continue-game="playAgain"
+                                    :finishTime="finishTime" @user-choose="getUserAnswer" @continue-game="playAgain"
                                     @game-over="showResult"></answers-game>
                             </div>
                             <div class="col-sm-1 text-white mt-2 d-flex justify-content-center">
@@ -210,7 +217,13 @@ export default {
         <div v-else>
             <h1 class="text-center result-text mt-5">PUNTEGGIO TOTALE</h1>
             <div class="result container mt-5">
-                <div class="me-3">
+                <div class="me-3 text-center">
+
+                    <!-- partita persa per mancata risposta dell'utente -->
+                    <div v-if="finishTime">
+                        <h2 class="text-danger">Non hai fatto in tempo a rispondere</h2>
+                    </div>
+
                     <!-- caso in cui l'utemte dà tutte le risposte esatte -->
                     <h3 v-if="!userLose.length">Complimenti, hai vinto!!! Hai risposto esattamente a
                         tutte e {{ userWin.length }} le domande.</h3>
@@ -235,18 +248,20 @@ export default {
                         </h3>
                     </div>
 
-                    <!-- mostro le risposte sbagliate e l'opzione che sarebbe stata giusta -->
-                    <ul v-for="choose in userLose" :key="choose.userAnswer">
-                        <li v-if="userWin.length < questions.length - 1" class="list-group-item">
-                            <h4>La tua scalata si è fermata qui:</h4>
-                        </li>
-                        <li class="list-group-item">Alla domanda {{ `"${choose.question}"` }} hai
-                            risposto
-                            <span class="text-danger">{{ choose.userChoose }}. </span>
-                            <span>La risposta corretta era <span class="text-success">{{
-                                choose.rightAnswer }}</span></span>
-                        </li>
-                    </ul>
+                    <!-- mostro la risposta sbagliata e l'opzione che sarebbe stata giusta -->
+                    <div v-if="!finishTime">
+                        <ul v-for="choose in userLose" :key="choose.userAnswer">
+                            <li v-if="userWin.length < questions.length - 1" class="list-group-item">
+                                <h4>La tua scalata si è fermata qui:</h4>
+                            </li>
+                            <li class="list-group-item">Alla domanda {{ `"${choose.question}"` }} hai
+                                risposto
+                                <span class="text-danger">{{ choose.userChoose }}. </span>
+                                <span>La risposta corretta era <span class="text-success">{{
+                                    choose.rightAnswer }}</span></span>
+                            </li>
+                        </ul>
+                    </div>
 
                 </div>
                 <div class="d-flex justify-content-end">
