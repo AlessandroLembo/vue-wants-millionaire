@@ -9,7 +9,8 @@ export default {
         isWrong: Boolean,
         isClicked: Boolean,
         disabledRadio: Boolean,
-        disabledButton: Boolean
+        disabledButton: Boolean,
+        finishTime: Boolean
     },
 
     methods: {
@@ -43,9 +44,10 @@ export default {
 
         <!-- alert che dà un feedback in caso di risposta sbagliata -->
         <div v-if="!isExactly && isClicked"
-            class="alert alert-danger d-flex flex-column flex-sm-row justify-content-center justify-content-sm-between align-items-center fs-3"
-            role="alert">
-            Risposta errata!
+            class="d-flex flex-column flex-sm-row justify-content-center justify-content-sm-between align-items-center fs-3"
+            role="alert" :class="[finishTime ? 'alert alert-warning' : 'alert alert-danger']">
+            <p v-if="finishTime">Attenzione..Tempo scaduto!!</p>
+            <p v-else>Risposta errata!</p>
             <button type="button" class="btn btn-outline-secondary" @click="$emit('game-over')">Vai al punteggio</button>
         </div>
         <div v-else-if="!isClicked || isExactly"
