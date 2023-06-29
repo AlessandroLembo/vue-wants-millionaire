@@ -203,7 +203,10 @@ export default {
                                     @game-over="showResult"></answers-game>
                             </div>
                             <div class="col-sm-1 text-white mt-2 d-flex justify-content-center">
-                                <h3>{{ reactionTime }}</h3>
+                                <div>
+                                    <i class="fa-solid fa-hourglass-half fa-beat-fade"></i>
+                                    <h3>{{ reactionTime }}</h3>
+                                </div>
                             </div>
 
                         </div>
