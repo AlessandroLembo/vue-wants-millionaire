@@ -206,12 +206,12 @@ export default {
                                 :finishTime="finishTime" @user-choose="getUserAnswer" @continue-game="playAgain"
                                 @game-over="showResult"></answers-game>
 
-                            <div v-if="!isClicked" class="text-white timer">
+                            <div v-if="!finishTime" class="text-white timer">
                                 <div
                                     class="d-flex flex-column align-items-center justify-content-center box-time text-primary">
                                     <h5>Time</h5>
                                     <div class="d-flex align-items-center justify-content-center mt-2">
-                                        <i class="fa-solid fa-hourglass-half fa-beat-fade fa-2x me-2"></i>
+                                        <i v-if="!isClicked" class="fa-solid fa-hourglass-half fa-beat-fade fa-2x me-2"></i>
                                         <h2>{{ reactionTime }}s </h2>
                                     </div>
                                 </div>
