@@ -51,7 +51,7 @@ export default {
             <button type="button" class="btn btn-outline-secondary" @click="$emit('game-over')">Vai al punteggio</button>
         </div>
         <div v-else-if="!isClicked || isExactly"
-            class="d-flex justify-content-center justify-content-sm-end align-items-center">
+            class="d-flex justify-content-center justify-content-lg-end align-items-center">
             <button type="button" class="btn btn-warning mt-2" :disabled="!disabledButton"
                 @click="$emit('continue-game')">Continua</button>
         </div>
