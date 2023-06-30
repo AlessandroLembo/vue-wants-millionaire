@@ -22,7 +22,7 @@ export default {
             userWin: [],
             userLose: [],
             timer: null,
-            reactionTime: 5,
+            reactionTime: 15,
             finishTime: false,
             choose: {},
         }
@@ -154,7 +154,7 @@ export default {
             this.userAnswer = '';
             this.isExactly = false;
             this.isWrong = false;
-            this.reactionTime = 5; // al cambio domanda imposto nuovamente il timer 
+            this.reactionTime = 15; // al cambio domanda imposto nuovamente il timer 
             if (!this.gameOver) this.startTimer(); // faccio partire il timer se la partita non è finita
 
         },
