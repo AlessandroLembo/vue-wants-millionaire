@@ -174,13 +174,15 @@ export default {
 </script>
 
 <template>
-    <div class="content-quiz h-100">
+    <div id="content-quiz h-100">
         <div v-if="!result">
-            <div class="box-image">
-                <img src="../assets/img/millionaire.jpg" class="img-fluid" alt="millionaire">
+            <div class="d-flex justify-content-center align-items-center mt-4">
+                <figure>
+                    <img src="../assets/img/mill.png" alt="millionaire">
+                </figure>
             </div>
 
-            <div class="question-content">
+            <section id="question-content">
 
                 <div class="container">
                     <!-- Se il gioco è finito mostro i risultati -->
@@ -198,24 +200,27 @@ export default {
                     <div v-else>
                         <question-game :question="getItemRandom"></question-game>
 
-                        <answers-game :answers="getAnswers" :isExactly="isExactly" :isClicked="isClicked" :isWrong="isWrong"
-                            :disabledRadio="disabledRadio" :disabledButton="disabledButton" :finishTime="finishTime"
-                            @user-choose="getUserAnswer" @continue-game="playAgain" @game-over="showResult"></answers-game>
+                        <div class="content-options">
+                            <answers-game :answers="getAnswers" :isExactly="isExactly" :isClicked="isClicked"
+                                :isWrong="isWrong" :disabledRadio="disabledRadio" :disabledButton="disabledButton"
+                                :finishTime="finishTime" @user-choose="getUserAnswer" @continue-game="playAgain"
+                                @game-over="showResult"></answers-game>
 
-                        <div v-if="!isClicked" class="text-white">
-                            <div class="d-flex flex-column align-items-center justify-content-center box-time text-primary">
-                                <h5>Time</h5>
-                                <div class="d-flex align-items-center justify-content-center mt-2">
-                                    <i class="fa-solid fa-hourglass-half fa-beat-fade fa-2x me-2"></i>
-                                    <h2>{{ reactionTime }}s </h2>
+                            <div v-if="!isClicked" class="text-white timer">
+                                <div
+                                    class="d-flex flex-column align-items-center justify-content-center box-time text-primary">
+                                    <h5>Time</h5>
+                                    <div class="d-flex align-items-center justify-content-center mt-2">
+                                        <i class="fa-solid fa-hourglass-half fa-beat-fade fa-2x me-2"></i>
+                                        <h2>{{ reactionTime }}s </h2>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
-
-
-            </div>
+            </section>
 
         </div>
 
@@ -281,13 +286,23 @@ export default {
 </template>
 
 <style scoped lang="scss">
-.content-quiz {
+#content-quiz {
     height: 100%;
 }
 
-.question-content {
+#question-content {
     padding: 2rem;
     background-color: darkblue;
+}
+
+.content-options {
+    position: relative;
+
+    .timer {
+        position: absolute;
+        right: -2rem;
+        bottom: 6rem;
+    }
 }
 
 .box-time {
@@ -310,5 +325,18 @@ export default {
     min-height: 100px;
     border: 10px solid darkgoldenrod;
     padding: 1rem;
+
+}
+
+@media screen and (max-width: 992px) {
+    .content-options {
+        position: relative;
+
+        .timer {
+            position: absolute;
+            right: -3rem;
+            bottom: -3rem;
+        }
+    }
 }
 </style>
