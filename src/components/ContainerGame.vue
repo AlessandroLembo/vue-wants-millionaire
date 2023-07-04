@@ -205,26 +205,19 @@ export default {
 
                     <!-- ...altrimenti vado avanti col gioco -->
                     <div v-else>
-                        <div class="content-question">
+                        <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center">
                             <question-game :question="getItemRandom"></question-game>
 
-                            <!-- mostro il jackpot solo se il tempo non è scaduto e se l'utente non sbaglia risposta -->
-                            <div v-if="(!finishTime && !disabledRadio) || (isExactly && isClicked)"
-                                class="jackpot d-flex flex-column align-items-center">
-                                <h5>Jackpot</h5>
-                                <p><span v-if="userSumWin">$</span>{{ userSumWin }}</p>
-                            </div>
-                        </div>
+                            <div class="content-info">
+                                <!-- mostro il jackpot solo se il tempo non è scaduto e se l'utente non sbaglia risposta -->
+                                <div v-if="(!finishTime && !disabledRadio) || (isExactly && isClicked)"
+                                    class="jackpot d-flex flex-column align-items-center me-2">
+                                    <h5>Jackpot</h5>
+                                    <p class="fs-4 m-0"><span v-if="userSumWin">$</span>{{ userSumWin }}</p>
+                                </div>
 
-                        <div class="content-options">
-                            <answers-game :answers="getAnswers" :isExactly="isExactly" :isClicked="isClicked"
-                                :isWrong="isWrong" :disabledRadio="disabledRadio" :disabledButton="disabledButton"
-                                :finishTime="finishTime" :singleAnswerWin="singleAnswerWin"
-                                :questionsUndone="questionsUndone" @user-choose="getUserAnswer" @continue-game="playAgain"
-                                @game-over="showResult"></answers-game>
-
-                            <div v-if="!finishTime" class="text-white timer">
-                                <div
+                                <!-- scompare il timer solo quando scade il tempo -->
+                                <div v-if="!finishTime"
                                     class="d-flex flex-column align-items-center justify-content-center box-time text-primary">
                                     <h5>Time</h5>
                                     <div class="d-flex align-items-center justify-content-center mt-2">
@@ -232,7 +225,19 @@ export default {
                                         <h2>{{ reactionTime }}s </h2>
                                     </div>
                                 </div>
+
                             </div>
+                        </div>
+
+
+                        <answers-game :answers="getAnswers" :isExactly="isExactly" :isClicked="isClicked" :isWrong="isWrong"
+                            :disabledRadio="disabledRadio" :disabledButton="disabledButton" :finishTime="finishTime"
+                            :singleAnswerWin="singleAnswerWin" :questionsUndone="questionsUndone"
+                            @user-choose="getUserAnswer" @continue-game="playAgain" @game-over="showResult"></answers-game>
+
+                        <div class="content-options">
+
+
                         </div>
 
                     </div>
@@ -259,66 +264,25 @@ export default {
     background-color: darkblue;
 }
 
-.content-question {
-    position: relative;
+.content-info {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 
     .jackpot {
         width: 170px;
-        height: 70px;
         background-color: goldenrod;
         padding: 10px;
         border-radius: 5px;
+
+    }
+
+    .box-time {
+        width: 100px;
+        background-color: whitesmoke;
+        padding: 10px;
         box-shadow: 2px 2px darkgray;
-
-        position: absolute;
-        right: -2rem;
-        bottom: 0;
-    }
-}
-
-
-.content-options {
-    position: relative;
-
-    .timer {
-        position: absolute;
-        right: -2rem;
-        bottom: 6rem;
-    }
-}
-
-.box-time {
-    width: 100px;
-    height: 100px;
-    background-color: whitesmoke;
-    padding: 10px;
-    box-shadow: 2px 2px darkgray;
-    border-radius: 5px;
-}
-
-
-@media screen and (max-width: 992px) {
-    .content-question {
-        position: relative;
-
-        .jackpot {
-            width: 140px;
-            height: 70px;
-            position: absolute;
-            left: -2rem;
-            bottom: -30rem;
-        }
-
-    }
-
-    .content-options {
-        position: relative;
-
-        .timer {
-            position: absolute;
-            right: -3rem;
-            bottom: -3rem;
-        }
+        border-radius: 5px;
     }
 }
 </style>
