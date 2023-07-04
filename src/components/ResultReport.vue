@@ -8,7 +8,8 @@ export default {
         userWin: Array,
         userSumWin: Number,
         singleAnswerWin: Number,
-        choose: Object
+        choose: Object,
+        withdraw: Boolean
     },
     data() {
         return {
@@ -28,38 +29,45 @@ export default {
 
                 <!-- partita persa per mancata risposta dell'utente -->
                 <div v-if="finishTime">
-                    <h2 class="text-danger size-text">Non hai fatto in tempo a rispondere</h2>
+                    <p class="text-danger size-text">Non hai fatto in tempo a rispondere</p>
+                </div>
+
+                <!-- caso in cui l'utente decide di ritirarsi dal gioco -->
+                <div v-if="withdraw">
+                    <p class="size-text text-success">Hai deciso di ritirarti dal gioco..Porti a casa ${{ userSumWin }}</p>
                 </div>
 
                 <!-- caso in cui l'utemte dà tutte le risposte esatte -->
-                <h3 v-if="!userLose.length" class="size-text">Complimenti, hai vinto!!! Hai risposto esattamente a
-                    tutte e {{ userWin.length }} le domande. Porti a casa ${{ userSumWin }}</h3>
+                <p v-if="!userLose.length && !withdraw" class="size-text text-success">Complimenti, hai vinto!!! Hai
+                    risposto
+                    esattamente a
+                    tutte e {{ userWin.length }} le domande. Porti a casa ${{ userSumWin }}</p>
 
                 <!-- caso in cui l'utente sbaglia al primo colpo -->
-                <h3 v-else-if="!userWin.length" class="size-text">Brutto risultato!!! Purtroppo il tuo gioco si ferma al {{
-                    userLose.length }}° step.</h3>
+                <p v-else-if="!userWin.length" class="size-text">Brutto risultato!!! Purtroppo il tuo gioco si ferma al {{
+                    userLose.length }}° step.</p>
 
                 <!-- caso in cui l'utente sbaglia l'ultima domanda -->
-                <h3 v-else-if="userLose.length && userWin.length === questions.length - 1" class="size-text">
+                <p v-else-if="userLose.length && userWin.length === questions.length - 1" class="size-text">
                     Peccato, eri a un passo dalla vittoria, ti
                     sei fermato all'ultimo scalino!!
-                </h3>
+                </p>
 
                 <!-- l'utente risponde esattamente ad almeno una domanda ma si ferma almeno a due risposte dalla fine -->
                 <div v-else-if="userLose.length && userWin.length < questions.length - 1">
-                    <h3 class="size-text">
+                    <p class="size-text">
                         Hai risposto esattamente a {{
                             userWin.length }}
                         <span v-if="userWin.length === 1">sola domanda</span>
                         <span v-else>domande</span>
-                    </h3>
+                    </p>
                 </div>
 
                 <!-- mostro la risposta sbagliata e l'opzione che sarebbe stata giusta -->
                 <div v-if="!finishTime">
                     <ul v-for="choose in userLose" :key="choose.userAnswer">
                         <li v-if="userWin.length < questions.length - 1" class="list-group-item">
-                            <h3 class="size-text">La tua scalata si è fermata qui:</h3>
+                            <p class="size-text">La tua scalata si è fermata qui:</p>
                         </li>
                         <li class="list-group-item size-text">Alla domanda {{ `"${choose.question}"` }} hai
                             risposto
