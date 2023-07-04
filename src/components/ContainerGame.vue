@@ -28,7 +28,8 @@ export default {
             finishTime: false,
             choose: {},
             singleAnswerWin: 0,
-            userSumWin: 0
+            userSumWin: 0,
+            withdraw: false
         }
     },
     computed: {
@@ -168,9 +169,16 @@ export default {
 
         },
 
+        // metodo per interrompere la partita e ritirare il montepremi
+        getJackpot() {
+            this.withdraw = true;
+            this.showResult();
+        },
+
         // metodo per mostrare il risultato
         showResult() {
             this.result = true;
+            clearInterval(this.timer);
         },
 
     },
@@ -213,7 +221,8 @@ export default {
                                     </div>
                                     <div class="col-5">
                                         <div class="d-flex justify-content-center mt-2">
-                                            <button type="button" class="btn btn-outline-primary p-1 fw-bold">RITIRA
+                                            <button type="button" class="btn btn-outline-primary p-1 fw-bold"
+                                                @click="getJackpot()">RITIRA
                                                 MONTEPREMI</button>
                                         </div>
                                     </div>
@@ -253,7 +262,7 @@ export default {
         <!-- resoconto della partita -->
         <div v-else>
             <result-report :finishTime="finishTime" :userLose="userLose" :userWin="userWin" :userSumWin="userSumWin"
-                :singleAnswerWin="singleAnswerWin" :choose="choose"></result-report>
+                :singleAnswerWin="singleAnswerWin" :choose="choose" :withdraw="withdraw"></result-report>
         </div>
     </div>
 </template>
