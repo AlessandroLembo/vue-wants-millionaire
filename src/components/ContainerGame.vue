@@ -1,5 +1,5 @@
 <script>
-import { questions } from "../data";
+import { questions, moneyJackpot } from "../data";
 import QuestionGame from "./QuestionGame.vue";
 import AnswersGame from "./AnswersGame.vue";
 export default {
@@ -8,6 +8,7 @@ export default {
     data() {
         return {
             questions,
+            moneyJackpot,
             userAnswer: '',
             isExactly: false,
             isWrong: false,
