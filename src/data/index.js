@@ -154,23 +154,23 @@ const questions = [
 const moneyJackpot = [
   {
     id: 0,
-    value: '$500'
+    value: 500
   },
   {
     id: 1,
-    value: '$1000'
+    value: 1000
   },
   {
     id: 2,
-    value: '$2000'
+    value: 2500
   },
   {
     id: 3,
-    value: '$5000'
+    value: 6000
   },
   {
     id: 4,
-    value: '$10000'
+    value: 10000
   },
 
 ]
