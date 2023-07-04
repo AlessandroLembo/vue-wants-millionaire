@@ -26,6 +26,7 @@ export default {
             reactionTime: 15,
             finishTime: false,
             choose: {},
+            singleAnswerWin: 0,
             userSumeWin: 0
         }
     },
@@ -113,7 +114,8 @@ export default {
                     }
                     this.userWin.push(this.choose);
                     let firstValue = this.moneyJackpot.shift(); // elimino il primo elemento dall'array e lo salvo in variabile
-                    this.userSumeWin += firstValue.value; // aggiorno la somma vinta dall'utente
+                    this.singleAnswerWin = firstValue.value; // salvo il valore della vincita della risposta
+                    this.userSumeWin += this.singleAnswerWin; // aggiorno la somma vinta dall'utente
 
                     //...se la risposta equivale alla scelta dell'utente ma è sbagliata..
                 } else if (ans.answer === userAnswer && !ans.rightAnswer) {
@@ -209,14 +211,15 @@ export default {
                             <div v-if="(!finishTime && !disabledRadio) || (isExactly && isClicked)"
                                 class="jackpot d-flex flex-column align-items-center">
                                 <h5>Jackpot</h5>
-                                <p>{{ userSumeWin }}</p>
+                                <p><span v-if="userSumeWin">$</span>{{ userSumeWin }}</p>
                             </div>
                         </div>
 
                         <div class="content-options">
                             <answers-game :answers="getAnswers" :isExactly="isExactly" :isClicked="isClicked"
                                 :isWrong="isWrong" :disabledRadio="disabledRadio" :disabledButton="disabledButton"
-                                :finishTime="finishTime" @user-choose="getUserAnswer" @continue-game="playAgain"
+                                :finishTime="finishTime" :singleAnswerWin="singleAnswerWin"
+                                :questionsUndone="questionsUndone" @user-choose="getUserAnswer" @continue-game="playAgain"
                                 @game-over="showResult"></answers-game>
 
                             <div v-if="!finishTime" class="text-white timer">
@@ -250,7 +253,7 @@ export default {
 
                     <!-- caso in cui l'utemte dà tutte le risposte esatte -->
                     <h3 v-if="!userLose.length">Complimenti, hai vinto!!! Hai risposto esattamente a
-                        tutte e {{ userWin.length }} le domande.</h3>
+                        tutte e {{ userWin.length }} le domande. Porti a casa ${{ userSumeWin }}</h3>
 
                     <!-- caso in cui l'utente sbaglia al primo colpo -->
                     <h3 v-else-if="!userWin.length">Brutto risultato!!! Purtroppo il tuo gioco si ferma al {{
