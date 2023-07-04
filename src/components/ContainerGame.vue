@@ -26,6 +26,7 @@ export default {
             reactionTime: 15,
             finishTime: false,
             choose: {},
+            userSumeWin: 0
         }
     },
     computed: {
@@ -111,6 +112,8 @@ export default {
                         userChoose: userAnswer
                     }
                     this.userWin.push(this.choose);
+                    let firstValue = this.moneyJackpot.shift(); // elimino il primo elemento dall'array e lo salvo in variabile
+                    this.userSumeWin += firstValue.value; // aggiorno la somma vinta dall'utente
 
                     //...se la risposta equivale alla scelta dell'utente ma è sbagliata..
                 } else if (ans.answer === userAnswer && !ans.rightAnswer) {
@@ -206,7 +209,7 @@ export default {
                             <div v-if="(!finishTime && !disabledRadio) || (isExactly && isClicked)"
                                 class="jackpot d-flex flex-column align-items-center">
                                 <h5>Jackpot</h5>
-                                <p>soldi</p>
+                                <p>{{ userSumeWin }}</p>
                             </div>
                         </div>
 
