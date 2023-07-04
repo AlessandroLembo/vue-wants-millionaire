@@ -202,11 +202,21 @@ export default {
                             <div class="content-info">
                                 <!-- mostro il jackpot solo se il tempo non è scaduto e se l'utente non sbaglia risposta -->
                                 <div v-if="(!finishTime && !disabledRadio) || (isExactly && isClicked)"
-                                    class="jackpot d-flex flex-column align-items-center me-2">
-                                    <h5>Jackpot</h5>
-                                    <p class="fs-4 m-0 sum-win d-flex justify-content-center"
-                                        :class="[isExactly ? 'sum-update' : '']"><span v-if="userSumWin">$</span>{{
-                                            userSumWin }}</p>
+                                    class="jackpot row flex-column flex-xl-row justify-content-center align-items-center m-0 me-2">
+                                    <div class="col-7 p-0">
+                                        <div class="d-flex flex-column">
+                                            <h5 class="fw-bold">JACKPOT</h5>
+                                            <p class="fs-4 m-0 sum-win d-flex justify-content-center"
+                                                :class="[isExactly ? 'sum-update' : '']"><span v-if="userSumWin">$</span>{{
+                                                    userSumWin }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-5">
+                                        <div class="d-flex justify-content-center mt-2">
+                                            <button type="button" class="btn btn-outline-primary p-1 fw-bold">RITIRA
+                                                MONTEPREMI</button>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <!-- scompare il timer solo quando scade il tempo -->
@@ -264,12 +274,9 @@ export default {
     align-items: center;
 
     .jackpot {
-        width: 170px;
         background-color: goldenrod;
-        padding: 10px;
+        padding: 1rem;
         border-radius: 5px;
-
-
     }
 
     .box-time {
