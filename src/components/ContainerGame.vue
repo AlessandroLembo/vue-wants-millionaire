@@ -213,7 +213,9 @@ export default {
                                 <div v-if="(!finishTime && !disabledRadio) || (isExactly && isClicked)"
                                     class="jackpot d-flex flex-column align-items-center me-2">
                                     <h5>Jackpot</h5>
-                                    <p class="fs-4 m-0"><span v-if="userSumWin">$</span>{{ userSumWin }}</p>
+                                    <p class="fs-4 m-0 sum-win d-flex justify-content-center"
+                                        :class="[isExactly ? 'sum-update' : '']"><span v-if="userSumWin">$</span>{{
+                                            userSumWin }}</p>
                                 </div>
 
                                 <!-- scompare il timer solo quando scade il tempo -->
@@ -275,6 +277,7 @@ export default {
         padding: 10px;
         border-radius: 5px;
 
+
     }
 
     .box-time {
@@ -283,6 +286,31 @@ export default {
         padding: 10px;
         box-shadow: 2px 2px darkgray;
         border-radius: 5px;
+    }
+}
+
+.sum-win {
+    height: 40px;
+    width: 110px;
+    border: 2px solid darkblue;
+    border-radius: 5px;
+
+}
+
+.sum-update {
+    animation-name: bump;
+    animation-duration: 0.2s;
+    animation-iteration-count: 5;
+    animation-direction: alternate;
+}
+
+@keyframes bump {
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(1.2);
     }
 }
 </style>
