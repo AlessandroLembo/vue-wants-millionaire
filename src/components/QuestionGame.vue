@@ -10,7 +10,17 @@ export default {
 </script>
 
 <template>
-    <h2 class="text-center text-white my-5">{{ question.question }}</h2>
+    <h1 class="text-center text-white mt-5 single-question">{{ question.question }}</h1>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.single-question {
+    margin-left: 7rem;
+}
+
+@media screen and (max-width: 992px) {
+    .single-question {
+        margin-left: 3rem;
+    }
+}
+</style>
