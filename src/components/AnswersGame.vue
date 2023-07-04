@@ -1,4 +1,5 @@
 <script>
+import { questions } from "../data";
 import SingleAnswer from './SingleAnswer.vue';
 export default {
     name: "AnswersGame",
@@ -10,7 +11,15 @@ export default {
         isClicked: Boolean,
         disabledRadio: Boolean,
         disabledButton: Boolean,
-        finishTime: Boolean
+        finishTime: Boolean,
+        singleAnswerWin: Number,
+        questionsUndone: Array
+    },
+
+    data() {
+        return {
+            questions
+        }
     },
 
     methods: {
@@ -50,8 +59,15 @@ export default {
             <p v-else>Risposta errata!</p>
             <button type="button" class="btn btn-outline-secondary" @click="$emit('game-over')">Vai al punteggio</button>
         </div>
-        <div v-else-if="!isClicked || isExactly"
-            class="d-flex justify-content-center justify-content-lg-end align-items-center">
+        <!-- alert che dà un feedback sulla vincita relativa alla risposta esatta -->
+        <div v-else-if="isExactly && isClicked"
+            class="alert alert-success d-flex flex-column flex-sm-row justify-content-center justify-content-sm-between align-items-center fs-3"
+            role="alert">
+            <p>Risposta corretta!
+                <span v-if="questionsUndone.length !== questions.length - 1">Hai aggiunto ${{ singleAnswerWin }}
+                    alla tua vincita</span>
+                <span v-else>Hai vinto i primi ${{ singleAnswerWin }}</span>
+            </p>
             <button type="button" class="btn btn-warning mt-2" :disabled="!disabledButton"
                 @click="$emit('continue-game')">Continua</button>
         </div>
