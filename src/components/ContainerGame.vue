@@ -92,7 +92,7 @@ export default {
             // inizializzo il flag che utlizzo nel template con valore false
             this.isExactly = false;
 
-            // disabilito i radios e dichiaro che è stat selezionata una risposta
+            // disabilito i radios e dichiaro che è stata selezionata una risposta
             this.isClicked = true;
             this.disabledRadio = true;
 
@@ -198,7 +198,16 @@ export default {
 
                     <!-- ...altrimenti vado avanti col gioco -->
                     <div v-else>
-                        <question-game :question="getItemRandom"></question-game>
+                        <div class="content-question">
+                            <question-game :question="getItemRandom"></question-game>
+
+                            <!-- mostro il jackpot solo se il tempo non è scaduto e se l'utente non sbaglia risposta -->
+                            <div v-if="(!finishTime && !disabledRadio) || (isExactly && isClicked)"
+                                class="jackpot d-flex flex-column align-items-center">
+                                <h5>Jackpot</h5>
+                                <p>soldi</p>
+                            </div>
+                        </div>
 
                         <div class="content-options">
                             <answers-game :answers="getAnswers" :isExactly="isExactly" :isClicked="isClicked"
@@ -295,6 +304,24 @@ export default {
     background-color: darkblue;
 }
 
+.content-question {
+    position: relative;
+
+    .jackpot {
+        width: 170px;
+        height: 70px;
+        background-color: goldenrod;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 2px 2px darkgray;
+
+        position: absolute;
+        right: -2rem;
+        bottom: 0;
+    }
+}
+
+
 .content-options {
     position: relative;
 
@@ -329,6 +356,19 @@ export default {
 }
 
 @media screen and (max-width: 992px) {
+    .content-question {
+        position: relative;
+
+        .jackpot {
+            width: 140px;
+            height: 70px;
+            position: absolute;
+            left: -2rem;
+            bottom: -30rem;
+        }
+
+    }
+
     .content-options {
         position: relative;
 
