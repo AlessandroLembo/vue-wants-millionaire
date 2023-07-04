@@ -149,6 +149,30 @@ const questions = [
           },
         ]
       }
+];
+
+const moneyJackpot = [
+  {
+    id: 0,
+    value: '$500'
+  },
+  {
+    id: 1,
+    value: '$1000'
+  },
+  {
+    id: 2,
+    value: '$2000'
+  },
+  {
+    id: 3,
+    value: '$5000'
+  },
+  {
+    id: 4,
+    value: '$10000'
+  },
+
 ]
 
-export { questions };
+export { questions, moneyJackpot };
