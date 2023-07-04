@@ -13,7 +13,9 @@ export default {
         disabledButton: Boolean,
         finishTime: Boolean,
         singleAnswerWin: Number,
-        questionsUndone: Array
+        questionsUndone: Array,
+        gameOver: Boolean,
+        userLose: Array
     },
 
     data() {
@@ -68,8 +70,11 @@ export default {
                     alla tua vincita</span>
                 <span v-else>Hai vinto i primi ${{ singleAnswerWin }}</span>
             </p>
-            <button type="button" class="btn btn-warning mt-2" :disabled="!disabledButton"
+            <button v-if="gameOver" type="button" class="btn btn-outline-secondary" @click="$emit('game-over')">Vai al
+                punteggio</button>
+            <button v-else type="button" class="btn btn-warning mt-2" :disabled="!disabledButton"
                 @click="$emit('continue-game')">Continua</button>
+
         </div>
     </div>
 </template>
