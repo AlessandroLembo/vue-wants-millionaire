@@ -135,6 +135,8 @@ export default {
             this.userAnswer = userAnswer; // assegno alla stringa userAnswer la risposta dell'utente proveniente dal componente figlio
 
             this.cleanRadios();
+
+            if (!this.questionsUndone.length) this.gameOver = true;
         },
 
         cleanRadios() {
@@ -192,19 +194,8 @@ export default {
             <section id="question-content">
 
                 <div class="container">
-                    <!-- Se il gioco è finito mostro i risultati -->
-                    <div v-if="gameOver && !userLose.length" class="d-flex justify-content-center">
 
-                        <!-- button pe mostrare il punteggio -->
-                        <div>
-                            <button type="button" class="btn btn-secondary mt-2" @click="showResult()">Vai al
-                                punteggio
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- ...altrimenti vado avanti col gioco -->
-                    <div v-else>
+                    <div>
                         <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center">
                             <question-game :question="getItemRandom"></question-game>
 
@@ -234,8 +225,9 @@ export default {
 
                         <answers-game :answers="getAnswers" :isExactly="isExactly" :isClicked="isClicked" :isWrong="isWrong"
                             :disabledRadio="disabledRadio" :disabledButton="disabledButton" :finishTime="finishTime"
-                            :singleAnswerWin="singleAnswerWin" :questionsUndone="questionsUndone"
-                            @user-choose="getUserAnswer" @continue-game="playAgain" @game-over="showResult"></answers-game>
+                            :singleAnswerWin="singleAnswerWin" :questionsUndone="questionsUndone" :gameOver="gameOver"
+                            :userLose="userLose" @user-choose="getUserAnswer" @continue-game="playAgain"
+                            @game-over="showResult"></answers-game>
 
                         <div class="content-options">
 
