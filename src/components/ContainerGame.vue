@@ -2,9 +2,10 @@
 import { questions, moneyJackpot } from "../data";
 import QuestionGame from "./QuestionGame.vue";
 import AnswersGame from "./AnswersGame.vue";
+import ResultReport from "./ResultReport.vue";
 export default {
     name: "ContainerGame",
-    components: { QuestionGame, AnswersGame },
+    components: { QuestionGame, AnswersGame, ResultReport },
     data() {
         return {
             questions,
@@ -27,7 +28,7 @@ export default {
             finishTime: false,
             choose: {},
             singleAnswerWin: 0,
-            userSumeWin: 0
+            userSumWin: 0
         }
     },
     computed: {
@@ -115,7 +116,7 @@ export default {
                     this.userWin.push(this.choose);
                     let firstValue = this.moneyJackpot.shift(); // elimino il primo elemento dall'array e lo salvo in variabile
                     this.singleAnswerWin = firstValue.value; // salvo il valore della vincita della risposta
-                    this.userSumeWin += this.singleAnswerWin; // aggiorno la somma vinta dall'utente
+                    this.userSumWin += this.singleAnswerWin; // aggiorno la somma vinta dall'utente
 
                     //...se la risposta equivale alla scelta dell'utente ma è sbagliata..
                 } else if (ans.answer === userAnswer && !ans.rightAnswer) {
@@ -211,7 +212,7 @@ export default {
                             <div v-if="(!finishTime && !disabledRadio) || (isExactly && isClicked)"
                                 class="jackpot d-flex flex-column align-items-center">
                                 <h5>Jackpot</h5>
-                                <p><span v-if="userSumeWin">$</span>{{ userSumeWin }}</p>
+                                <p><span v-if="userSumWin">$</span>{{ userSumWin }}</p>
                             </div>
                         </div>
 
@@ -242,61 +243,8 @@ export default {
 
         <!-- resoconto della partita -->
         <div v-else>
-            <h1 class="text-center result-text mt-5">PUNTEGGIO TOTALE</h1>
-            <div class="result container mt-5">
-                <div class="me-3 text-center">
-
-                    <!-- partita persa per mancata risposta dell'utente -->
-                    <div v-if="finishTime">
-                        <h2 class="text-danger">Non hai fatto in tempo a rispondere</h2>
-                    </div>
-
-                    <!-- caso in cui l'utemte dà tutte le risposte esatte -->
-                    <h3 v-if="!userLose.length">Complimenti, hai vinto!!! Hai risposto esattamente a
-                        tutte e {{ userWin.length }} le domande. Porti a casa ${{ userSumeWin }}</h3>
-
-                    <!-- caso in cui l'utente sbaglia al primo colpo -->
-                    <h3 v-else-if="!userWin.length">Brutto risultato!!! Purtroppo il tuo gioco si ferma al {{
-                        userLose.length }}° step.</h3>
-
-                    <!-- caso in cui l'utente sbaglia l'ultima domanda -->
-                    <h3 v-else-if="userLose.length && userWin.length === questions.length - 1">
-                        Peccato, eri a un passo dalla vittoria, ti
-                        sei fermato all'ultimo scalino!!
-                    </h3>
-
-                    <!-- l'utente risponde esattamente ad almeno una domanda ma si ferma almeno a due risposte dalla fine -->
-                    <div v-else-if="userLose.length && userWin.length < questions.length - 1">
-                        <h3>
-                            Hai risposto esattamente a {{
-                                userWin.length }}
-                            <span v-if="userWin.length === 1">sola domanda</span>
-                            <span v-else>domande</span>
-                        </h3>
-                    </div>
-
-                    <!-- mostro la risposta sbagliata e l'opzione che sarebbe stata giusta -->
-                    <div v-if="!finishTime">
-                        <ul v-for="choose in userLose" :key="choose.userAnswer">
-                            <li v-if="userWin.length < questions.length - 1" class="list-group-item">
-                                <h4>La tua scalata si è fermata qui:</h4>
-                            </li>
-                            <li class="list-group-item">Alla domanda {{ `"${choose.question}"` }} hai
-                                risposto
-                                <span class="text-danger fs-3">{{ choose.userChoose }}. </span>
-                                <span>La risposta corretta era <span class="text-success fs-3">{{
-                                    choose.rightAnswer }}</span></span>
-                            </li>
-                        </ul>
-                    </div>
-
-                </div>
-                <div class="d-flex justify-content-end">
-                    <a href="http://localhost:8080/"><button type="button" class="btn btn-warning">Nuova
-                            partita</button></a>
-
-                </div>
-            </div>
+            <result-report :finishTime="finishTime" :userLose="userLose" :userWin="userWin" :userSumWin="userSumWin"
+                :singleAnswerWin="singleAnswerWin" :choose="choose"></result-report>
         </div>
     </div>
 </template>
@@ -348,19 +296,6 @@ export default {
     border-radius: 5px;
 }
 
-.result-text {
-    color: darkgoldenrod;
-    font-size: 60px;
-    font-weight: bold;
-}
-
-.result {
-    background-color: aliceblue;
-    min-height: 100px;
-    border: 10px solid darkgoldenrod;
-    padding: 1rem;
-
-}
 
 @media screen and (max-width: 992px) {
     .content-question {
